@@ -376,6 +376,14 @@
   .bud-lbl { font-size: .62rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; color: var(--faint); }
   .bud-cell.total .bud-lbl { color: rgba(255,255,255,.35); }
 
+  /* ── ITEM LINKS ── */
+  .item-link {
+    color: inherit; text-decoration: none;
+    border-bottom: 1px solid rgba(0,0,0,.18);
+    transition: border-color .15s, opacity .15s;
+  }
+  .item-link:hover { border-bottom-color: currentColor; opacity: .75; }
+
   /* ═══════════════════════════
      FOOTER
   ═══════════════════════════ */
@@ -1337,13 +1345,14 @@ function daysUntil(dateStr) {
   if (d<0) return 'vergangen'; if (d===0) return 'heute'; if (d===1) return 'morgen';
   return 'in '+d+' Tagen';
 }
-function scItem(num,title,badge,dateDisp,plays,likes,reps,topTrack,topSet) {
+function scItem(num,title,badge,dateDisp,plays,likes,reps,topTrack,topSet,url) {
   const col = badge==='tbadge-set'?'var(--c3)':'var(--c1)';
   const star = topTrack?'<span style="font-size:.72rem;color:var(--c1);font-weight:700">★ Top Track</span>'
               :topSet  ?'<span style="font-size:.72rem;color:var(--c3);font-weight:700">★ Top Set</span>':'';
   const p=plays!=null?fmtN(plays):'—', l=likes!=null?fmtN(likes):'—', r=reps!=null?fmtN(reps):'—';
+  const titleHtml=url?`<a href="${url}" target="_blank" rel="noopener" class="item-link">${title}</a>`:title;
   return `<div class="chron-item"><div class="chron-num">${String(num).padStart(2,'0')}</div>
-    <div class="chron-main"><div class="chron-title">${title}</div>
+    <div class="chron-main"><div class="chron-title">${titleHtml}</div>
       <div class="chron-sub"><span class="tbadge ${badge}">${badge==='tbadge-set'?'Set':'Track'}</span>
         <span class="chron-date">${dateDisp}</span>${star}</div></div>
     <div class="chron-stats"><div class="chron-stat-row">
@@ -1386,21 +1395,35 @@ async function loadLiveData() {
     document.getElementById('ov-sc-val').textContent=fmtN(totP);
     document.getElementById('ov-sc-sub').textContent=`${scF} Followers · ${scTC} Tracks`;
 
+    // Known set permalinks from API (so we badge them correctly)
+    const knownSets=new Set(['https://soundcloud.com/clapsparrow/urvb-1','https://soundcloud.com/clapsparrow/bass-und-blueten-schlegel']);
+
     const upSC=[
       {title:'Muffins Trance Edit',         date:'2026-05-23',label:'23.05.2026 · Free Download'},
       {title:'Prince — 17 Days (UKG Edit)', date:'2026-05-01',label:'01.05.2026 · Free Download'},
       {title:'I Wanna Feel It — Track 3',   date:'2026-04-10',label:'10.04.2026 · SoundCloud Drop'},
     ];
-    const sets=[
-      {title:'Clapsparrow @ URVB — 13.03.26 // Vinyl Only',             ds:'2026-03-17',dd:'17.03.2026',p:48, l:6, r:1, top:false},
-      {title:'Botanical Beats — Bass Und Blüten @ Schlegel Kultur Club', ds:'2024-11-06',dd:'06.11.2024',p:723,l:33,r:1, top:true},
-      {title:'Clapsparrow @ Pavoia Festival',                            ds:'2024-07-01',dd:'2024',      p:null,l:null,r:null,top:false},
-      {title:'Wohnzimmer Rave',                                          ds:'2024-01-01',dd:'2024',      p:null,l:null,r:null,top:false},
+    // Only items NOT in API (no URL available)
+    const hardcodedSets=[
+      {title:'Clapsparrow @ Pavoia Festival',ds:'2024-07-01',dd:'2024',p:null,l:null,r:null,isSet:true,top:false,url:null},
+      {title:'Wohnzimmer Rave',             ds:'2024-01-01',dd:'2024',p:null,l:null,r:null,isSet:true,top:false,url:null},
     ];
     const merged=[
-      ...tSorted.map(t=>({title:t.title,ds:t.created_at.slice(0,10),dd:t.created_at.slice(0,10).split('-').reverse().join('.'),p:t.playback_count,l:t.likes_count,r:t.reposts_count,isSet:false,top:t===topT})),
-      ...sets.map(s=>({...s,isSet:true}))
+      ...tSorted.map(t=>({
+        title:t.title, ds:t.created_at.slice(0,10),
+        dd:t.created_at.slice(0,10).split('-').reverse().join('.'),
+        p:t.playback_count, l:t.likes_count, r:t.reposts_count,
+        isSet:knownSets.has(t.permalink_url),
+        top:false, url:t.permalink_url
+      })),
+      ...hardcodedSets
     ].sort((a,b)=>b.ds.localeCompare(a.ds));
+    // Mark top track (non-set with most plays)
+    const topTrackItem=merged.filter(it=>!it.isSet).reduce((b,t)=>(t.p||0)>(b.p||0)?t:b, merged.filter(it=>!it.isSet)[0]||{});
+    merged.forEach(it=>{ if(it===topTrackItem) it.top=true; });
+    // Mark top set
+    const topSetItem=merged.filter(it=>it.isSet&&it.p!=null).reduce((b,t)=>(t.p||0)>(b.p||0)?t:b, merged.filter(it=>it.isSet&&it.p!=null)[0]||{});
+    merged.forEach(it=>{ if(it===topSetItem) it.topSet=true; });
 
     let scHtml=upSC.map(u=>`<div class="chron-item upcoming">
       <div class="chron-num">—</div>
@@ -1410,7 +1433,7 @@ async function loadLiveData() {
           <span class="chron-date">${u.label}</span></div></div>
       <div class="chron-stats"><div class="chron-date" style="font-size:.65rem;margin-top:3px">${daysUntil(u.date)}</div></div>
     </div>`).join('');
-    merged.forEach((it,i)=>{ scHtml+=scItem(i+1,it.title,it.isSet?'tbadge-set':'tbadge-track',it.dd,it.p,it.l,it.r,!it.isSet&&it.top,it.isSet&&it.top); });
+    merged.forEach((it,i)=>{ scHtml+=scItem(i+1,it.title,it.isSet?'tbadge-set':'tbadge-track',it.dd,it.p,it.l,it.r,!it.isSet&&it.top,it.isSet&&it.topSet,it.url); });
     document.getElementById('sc-chron-list').innerHTML=scHtml;
 
     const cAsc=[...tSorted].sort((a,b)=>a.created_at.localeCompare(b.created_at));
@@ -1457,9 +1480,11 @@ async function loadLiveData() {
       const cap=(p.caption||'').slice(0,55)+((p.caption||'').length>55?'…':'');
       const ew=Math.round((p.likes||0)/maxL*100);
       const star=best?'<span style="font-size:.72rem;color:var(--c2);font-weight:700">★ Best Performer</span>':'';
+      const igUrl=p.shortcode?`https://www.instagram.com/p/${p.shortcode}/`:null;
+      const capHtml=igUrl?`<a href="${igUrl}" target="_blank" rel="noopener" class="item-link">${cap||'—'}</a>`:(cap||'—');
       igHtml+=`<div class="chron-item">
         <div class="chron-num">${String(i+1).padStart(2,'0')}</div>
-        <div class="chron-main"><div class="chron-title">${cap||'—'}</div>
+        <div class="chron-main"><div class="chron-title">${capHtml}</div>
           <div class="chron-sub"><span class="tbadge ${badge}">${type}</span>
             <span class="chron-date">${p.date}</span>${star}</div>
           <div class="eng-bar"><div class="eng-fill" style="width:${ew}%;background:var(--c2)"></div></div></div>
