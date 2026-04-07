@@ -43,15 +43,11 @@ jobs:
         run: python instagram_analyze.py
         continue-on-error: true   # Nicht stoppen wenn IG blockiert
 
-      # 7. Dashboard generieren
-      - name: Generate dashboard
-        run: python generate_dashboard.py
-
-      # 8. Geänderte Dateien committen & pushen
-      - name: Commit & push updated dashboard
+      # 7. Nur JSON-Daten committen (dashboard.html lädt Daten via JS selbst)
+      - name: Commit & push updated data
         run: |
           git config user.name  "Dashboard Bot"
           git config user.email "bot@clapsparrow.de"
-          git add dashboard.html soundcloud_data.json instagram_data.json
-          git diff --staged --quiet || git commit -m "chore: auto-update dashboard $(date +'%d.%m.%Y')"
+          git add soundcloud_data.json instagram_data.json
+          git diff --staged --quiet || git commit -m "chore: auto-update data $(date +'%d.%m.%Y')"
           git push

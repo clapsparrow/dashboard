@@ -535,16 +535,16 @@
   <div class="ov-hero">
     <div class="ov-hero-left">
       <h1>Claps&shy;sparrow</h1>
-      <p>Social Media Dashboard &nbsp;·&nbsp; 06.04.2026</p>
+      <p>Social Media Dashboard &nbsp;·&nbsp; <span id="ov-date">06.04.2026</span></p>
     </div>
     <div class="ov-hero-right">
       <div class="ov-kpi">
         <div class="kpi-dot" style="background:var(--c1)"></div>
-        <div><div class="kpi-val">4.2K</div><div class="kpi-lbl">SC Plays gesamt</div></div>
+        <div><div class="kpi-val" id="ov-sc-plays">4.2K</div><div class="kpi-lbl">SC Plays gesamt</div></div>
       </div>
       <div class="ov-kpi">
         <div class="kpi-dot" style="background:var(--c2)"></div>
-        <div><div class="kpi-val">14.81%</div><div class="kpi-lbl">IG Engagement</div></div>
+        <div><div class="kpi-val" id="ov-ig-eng">14.81%</div><div class="kpi-lbl">IG Engagement</div></div>
       </div>
       <div class="ov-kpi">
         <div class="kpi-dot" style="background:var(--c3)"></div>
@@ -568,13 +568,13 @@
       <div class="ov-col-title"><span class="cdot" style="background:var(--ink)"></span>Plattformen</div>
       <div class="plat-row">
         <div class="plat-icon" style="background:var(--c1)">SC</div>
-        <div><div class="plat-name">SoundCloud</div><div class="plat-sub">232 Followers · 20 Tracks</div></div>
-        <div class="plat-stat"><div class="plat-val" style="color:var(--c1)">4.2K</div><div class="plat-lbl">Plays gesamt</div></div>
+        <div><div class="plat-name">SoundCloud</div><div class="plat-sub" id="ov-sc-sub">232 Followers · 20 Tracks</div></div>
+        <div class="plat-stat"><div class="plat-val" style="color:var(--c1)" id="ov-sc-val">4.2K</div><div class="plat-lbl">Plays gesamt</div></div>
       </div>
       <div class="plat-row">
         <div class="plat-icon" style="background:var(--c2)">IG</div>
-        <div><div class="plat-name">Instagram</div><div class="plat-sub">530 Followers · 49 Posts</div></div>
-        <div class="plat-stat"><div class="plat-val" style="color:var(--c2)">14.81%</div><div class="plat-lbl">Engagement</div></div>
+        <div><div class="plat-name">Instagram</div><div class="plat-sub" id="ov-ig-sub">530 Followers · 49 Posts</div></div>
+        <div class="plat-stat"><div class="plat-val" style="color:var(--c2)" id="ov-ig-val">14.81%</div><div class="plat-lbl">Engagement</div></div>
       </div>
       <div class="plat-row">
         <div class="plat-icon" style="background:#1DB954">SP</div>
@@ -655,7 +655,7 @@
   <div class="banner">
     <div class="banner-bg" style="background:var(--c1)"></div>
     <div class="banner-title">Sound&shy;Cloud</div>
-    <div class="banner-meta">20 Tracks · 232 Followers<br>3 Tracks · 2 Sets veröffentlicht<br>Stand 06.04.2026</div>
+    <div class="banner-meta" id="sc-banner-meta">20 Tracks · 232 Followers<br>3 Tracks · 4 Sets veröffentlicht<br>Stand 06.04.2026</div>
   </div>
   <div class="circle-strip">
     <div class="cir" style="background:var(--c1)"></div>
@@ -672,13 +672,13 @@
     <div class="compare-col">
       <div class="compare-label">
         <span class="badge-type tbadge tbadge-track">Track</span>
-        3 veröffentlichte Tracks
+        <span id="sc-track-count-label">3 veröffentlichte Tracks</span>
       </div>
       <div class="compare-stats">
-        <div class="cs"><div class="cs-val" style="color:var(--c1)">3.4K</div><div class="cs-lbl">Plays gesamt</div></div>
-        <div class="cs"><div class="cs-val" style="color:var(--c1)">1147</div><div class="cs-lbl">Ø Plays</div></div>
-        <div class="cs"><div class="cs-val" style="color:var(--c1)">96</div><div class="cs-lbl">Likes gesamt</div></div>
-        <div class="cs"><div class="cs-val" style="color:var(--c1)">32</div><div class="cs-lbl">Ø Likes</div></div>
+        <div class="cs"><div class="cs-val" style="color:var(--c1)" id="sc-track-total-plays">3.4K</div><div class="cs-lbl">Plays gesamt</div></div>
+        <div class="cs"><div class="cs-val" style="color:var(--c1)" id="sc-track-avg-plays">1147</div><div class="cs-lbl">Ø Plays</div></div>
+        <div class="cs"><div class="cs-val" style="color:var(--c1)" id="sc-track-total-likes">96</div><div class="cs-lbl">Likes gesamt</div></div>
+        <div class="cs"><div class="cs-val" style="color:var(--c1)" id="sc-track-avg-likes">32</div><div class="cs-lbl">Ø Likes</div></div>
       </div>
     </div>
     <div class="compare-col">
@@ -703,7 +703,7 @@
 
   <!-- Chronologische Timeline -->
   <div style="padding: 14px 52px 8px; font-size:.62rem; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--faint); border-bottom:1px solid var(--sep);">Chronologisch — neueste zuerst</div>
-  <div class="chron-list">
+  <div class="chron-list" id="sc-chron-list">
 
     <!-- UPCOMING -->
     <div class="chron-item upcoming">
@@ -886,7 +886,7 @@
   <div class="banner">
     <div class="banner-bg" style="background:var(--c2)"></div>
     <div class="banner-title">Instagram</div>
-    <div class="banner-meta">530 Followers · 49 Posts<br>14.81% Engagement Rate<br>Stand 06.04.2026</div>
+    <div class="banner-meta" id="ig-banner-meta">530 Followers · 49 Posts<br>14.81% Engagement Rate<br>Stand 06.04.2026</div>
   </div>
   <div class="circle-strip">
     <div class="cir" style="background:var(--c2)"></div>
@@ -900,11 +900,11 @@
 
   <!-- Gesamt-Stats -->
   <div class="stats-row">
-    <div class="stat-cell"><div class="stat-val" style="color:var(--c2)">530</div><div class="stat-lbl">Followers</div></div>
-    <div class="stat-cell"><div class="stat-val" style="color:var(--c2)">49</div><div class="stat-lbl">Posts</div></div>
-    <div class="stat-cell"><div class="stat-val" style="color:var(--c2)">890</div><div class="stat-lbl">Likes (20 Posts)</div></div>
-    <div class="stat-cell"><div class="stat-val" style="color:var(--c2)">53</div><div class="stat-lbl">Kommentare (20)</div></div>
-    <div class="stat-cell"><div class="stat-val" style="color:var(--c2)">14.81%</div><div class="stat-lbl">Engagement</div></div>
+    <div class="stat-cell"><div class="stat-val" style="color:var(--c2)" id="ig-followers">530</div><div class="stat-lbl">Followers</div></div>
+    <div class="stat-cell"><div class="stat-val" style="color:var(--c2)" id="ig-total-posts">49</div><div class="stat-lbl">Posts</div></div>
+    <div class="stat-cell"><div class="stat-val" style="color:var(--c2)" id="ig-total-likes">890</div><div class="stat-lbl">Likes (20 Posts)</div></div>
+    <div class="stat-cell"><div class="stat-val" style="color:var(--c2)" id="ig-total-comments">53</div><div class="stat-lbl">Kommentare (20)</div></div>
+    <div class="stat-cell"><div class="stat-val" style="color:var(--c2)" id="ig-eng-rate">14.81%</div><div class="stat-lbl">Engagement</div></div>
   </div>
 
   <!-- Engagement Chart -->
@@ -915,7 +915,7 @@
 
   <!-- Chronologische Timeline -->
   <div style="padding: 14px 52px 8px; font-size:.62rem; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--faint); border-bottom:1px solid var(--sep);">Chronologisch — neueste zuerst &nbsp;·&nbsp; letzte 10 Posts + 2 geplante</div>
-  <div class="chron-list">
+  <div class="chron-list" id="ig-chron-list">
 
     <!-- GEPLANT (upcoming) -->
     <div class="chron-item upcoming">
@@ -1258,7 +1258,7 @@
 
 <div class="footer">
   <span>Clapsparrow Dashboard</span>
-  <span>Generiert 06.04.2026 &nbsp;·&nbsp; via Claude Code</span>
+  <span>Generiert <span id="footer-date">06.04.2026</span> &nbsp;·&nbsp; via Claude Code</span>
 </div>
 
 <script>
@@ -1284,10 +1284,10 @@ function mkOpts() {
   };
 }
 
-new Chart(document.getElementById('scTracksChart'),{type:'bar',data:{labels:scTrackLabels,datasets:[{data:scTrackPlays,backgroundColor:'rgba(224,122,82,.5)',borderColor:'#E07A52',borderWidth:2,borderRadius:3}]},options:mkOpts()});
-new Chart(document.getElementById('scSetsChart'),{type:'bar',data:{labels:scSetLabels,datasets:[{data:scSetPlays,backgroundColor:'rgba(90,142,184,.5)',borderColor:'#5A8EB8',borderWidth:2,borderRadius:3}]},options:mkOpts()});
-new Chart(document.getElementById('igLikesChart'),{type:'line',data:{labels:igLabels,datasets:[{data:igLikes,backgroundColor:'rgba(192,106,138,.12)',borderColor:'#C06A8A',borderWidth:2,fill:true,tension:.35,pointRadius:4,pointBackgroundColor:'#C06A8A'}]},options:mkOpts()});
-new Chart(document.getElementById('igCommsChart'),{type:'line',data:{labels:igLabels,datasets:[{data:igComments,backgroundColor:'rgba(192,106,138,.08)',borderColor:'#C06A8A',borderWidth:2,fill:true,tension:.35,pointRadius:4,pointBackgroundColor:'#C06A8A'}]},options:mkOpts()});
+let scTracksChartInst = new Chart(document.getElementById('scTracksChart'),{type:'bar',data:{labels:scTrackLabels,datasets:[{data:scTrackPlays,backgroundColor:'rgba(224,122,82,.5)',borderColor:'#E07A52',borderWidth:2,borderRadius:3}]},options:mkOpts()});
+let scSetsChartInst   = new Chart(document.getElementById('scSetsChart'),{type:'bar',data:{labels:scSetLabels,datasets:[{data:scSetPlays,backgroundColor:'rgba(90,142,184,.5)',borderColor:'#5A8EB8',borderWidth:2,borderRadius:3}]},options:mkOpts()});
+let igLikesChartInst  = new Chart(document.getElementById('igLikesChart'),{type:'line',data:{labels:igLabels,datasets:[{data:igLikes,backgroundColor:'rgba(192,106,138,.12)',borderColor:'#C06A8A',borderWidth:2,fill:true,tension:.35,pointRadius:4,pointBackgroundColor:'#C06A8A'}]},options:mkOpts()});
+let igCommsChartInst  = new Chart(document.getElementById('igCommsChart'),{type:'line',data:{labels:igLabels,datasets:[{data:igComments,backgroundColor:'rgba(192,106,138,.08)',borderColor:'#C06A8A',borderWidth:2,fill:true,tension:.35,pointRadius:4,pointBackgroundColor:'#C06A8A'}]},options:mkOpts()});
 
 // ── STICKY NAV: active travels left → right while scrolling ──
 const sections = ['overview','soundcloud','instagram','releases','content','budget'];
@@ -1322,6 +1322,164 @@ navLinks.forEach(link => {
     window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - navH - 2, behavior:'smooth' });
   });
 });
+
+// ── LIVE DATA LOADER ──
+function fmtN(n) {
+  if (n == null) return '–';
+  if (n >= 1000000) return (n/1000000).toFixed(1)+'M';
+  if (n >= 1000)    return (n/1000).toFixed(1)+'K';
+  return String(n);
+}
+function daysUntil(dateStr) {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const t = new Date(dateStr); t.setHours(0,0,0,0);
+  const d = Math.round((t-today)/86400000);
+  if (d<0) return 'vergangen'; if (d===0) return 'heute'; if (d===1) return 'morgen';
+  return 'in '+d+' Tagen';
+}
+function scItem(num,title,badge,dateDisp,plays,likes,reps,topTrack,topSet) {
+  const col = badge==='tbadge-set'?'var(--c3)':'var(--c1)';
+  const star = topTrack?'<span style="font-size:.72rem;color:var(--c1);font-weight:700">★ Top Track</span>'
+              :topSet  ?'<span style="font-size:.72rem;color:var(--c3);font-weight:700">★ Top Set</span>':'';
+  const p=plays!=null?fmtN(plays):'—', l=likes!=null?fmtN(likes):'—', r=reps!=null?fmtN(reps):'—';
+  return `<div class="chron-item"><div class="chron-num">${String(num).padStart(2,'0')}</div>
+    <div class="chron-main"><div class="chron-title">${title}</div>
+      <div class="chron-sub"><span class="tbadge ${badge}">${badge==='tbadge-set'?'Set':'Track'}</span>
+        <span class="chron-date">${dateDisp}</span>${star}</div></div>
+    <div class="chron-stats"><div class="chron-stat-row">
+      <div class="cs-item"><div class="v" style="color:${col}">${p}</div><div class="l">Plays</div></div>
+      <div class="cs-item"><div class="v">${l}</div><div class="l">Likes</div></div>
+      <div class="cs-item"><div class="v">${r}</div><div class="l">Rep.</div></div>
+    </div></div></div>`;
+}
+
+async function loadLiveData() {
+  let sc=null, ig=null;
+  try {
+    const [sR,iR] = await Promise.all([fetch('soundcloud_data.json'),fetch('instagram_data.json')]);
+    if(sR.ok) sc=await sR.json();
+    if(iR.ok) ig=await iR.json();
+  } catch(e){ console.log('Live data unavailable',e); return; }
+
+  const today=new Date();
+  const ds=today.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'});
+  document.getElementById('ov-date').textContent=ds;
+  document.getElementById('footer-date').textContent=ds;
+
+  if(sc) {
+    const prof=sc.profile||{}, trks=(sc.tracks||[]).filter(t=>t.created_at);
+    const tSorted=[...trks].sort((a,b)=>b.created_at.localeCompare(a.created_at));
+    const totP=trks.reduce((s,t)=>s+(t.playback_count||0),0);
+    const totL=trks.reduce((s,t)=>s+(t.likes_count||0),0);
+    const avgP=trks.length?Math.round(totP/trks.length):0;
+    const avgL=trks.length?Math.round(totL/trks.length):0;
+    const scF=prof.followers_count||0, scTC=prof.track_count||trks.length;
+    const topT=trks.reduce((b,t)=>(t.playback_count||0)>(b.playback_count||0)?t:b, trks[0]||{});
+
+    document.getElementById('sc-banner-meta').innerHTML=`${scTC} Tracks · ${scF} Followers<br>${trks.length} Tracks · 4 Sets veröffentlicht<br>Stand ${ds}`;
+    document.getElementById('sc-track-count-label').textContent=trks.length+' veröffentlichte Tracks';
+    document.getElementById('sc-track-total-plays').textContent=fmtN(totP);
+    document.getElementById('sc-track-avg-plays').textContent=fmtN(avgP);
+    document.getElementById('sc-track-total-likes').textContent=fmtN(totL);
+    document.getElementById('sc-track-avg-likes').textContent=fmtN(avgL);
+    document.getElementById('ov-sc-plays').textContent=fmtN(totP);
+    document.getElementById('ov-sc-val').textContent=fmtN(totP);
+    document.getElementById('ov-sc-sub').textContent=`${scF} Followers · ${scTC} Tracks`;
+
+    const upSC=[
+      {title:'Muffins Trance Edit',         date:'2026-05-23',label:'23.05.2026 · Free Download'},
+      {title:'Prince — 17 Days (UKG Edit)', date:'2026-05-01',label:'01.05.2026 · Free Download'},
+      {title:'I Wanna Feel It — Track 3',   date:'2026-04-10',label:'10.04.2026 · SoundCloud Drop'},
+    ];
+    const sets=[
+      {title:'Clapsparrow @ URVB — 13.03.26 // Vinyl Only',             ds:'2026-03-17',dd:'17.03.2026',p:48, l:6, r:1, top:false},
+      {title:'Botanical Beats — Bass Und Blüten @ Schlegel Kultur Club', ds:'2024-11-06',dd:'06.11.2024',p:723,l:33,r:1, top:true},
+      {title:'Clapsparrow @ Pavoia Festival',                            ds:'2024-07-01',dd:'2024',      p:null,l:null,r:null,top:false},
+      {title:'Wohnzimmer Rave',                                          ds:'2024-01-01',dd:'2024',      p:null,l:null,r:null,top:false},
+    ];
+    const merged=[
+      ...tSorted.map(t=>({title:t.title,ds:t.created_at.slice(0,10),dd:t.created_at.slice(0,10).split('-').reverse().join('.'),p:t.playback_count,l:t.likes_count,r:t.reposts_count,isSet:false,top:t===topT})),
+      ...sets.map(s=>({...s,isSet:true}))
+    ].sort((a,b)=>b.ds.localeCompare(a.ds));
+
+    let scHtml=upSC.map(u=>`<div class="chron-item upcoming">
+      <div class="chron-num">—</div>
+      <div class="chron-main"><div class="chron-title">${u.title}</div>
+        <div class="chron-sub"><span class="tbadge tbadge-track">Track</span>
+          <span class="tbadge tbadge-upcoming">Upcoming</span>
+          <span class="chron-date">${u.label}</span></div></div>
+      <div class="chron-stats"><div class="chron-date" style="font-size:.65rem;margin-top:3px">${daysUntil(u.date)}</div></div>
+    </div>`).join('');
+    merged.forEach((it,i)=>{ scHtml+=scItem(i+1,it.title,it.isSet?'tbadge-set':'tbadge-track',it.dd,it.p,it.l,it.r,!it.isSet&&it.top,it.isSet&&it.top); });
+    document.getElementById('sc-chron-list').innerHTML=scHtml;
+
+    const cAsc=[...tSorted].sort((a,b)=>a.created_at.localeCompare(b.created_at));
+    scTracksChartInst.data.labels=cAsc.map(t=>t.title.slice(0,12));
+    scTracksChartInst.data.datasets[0].data=cAsc.map(t=>t.playback_count||0);
+    scTracksChartInst.update();
+  }
+
+  if(ig) {
+    const prof=ig.profile||{}, posts=(ig.posts||[]).sort((a,b)=>b.date.localeCompare(a.date));
+    const top10=posts.slice(0,10);
+    const igF=prof.followers||0, igP=prof.posts||0;
+    const totL=top10.reduce((s,p)=>s+(p.likes||0),0);
+    const totC=top10.reduce((s,p)=>s+(p.comments||0),0);
+    const eng=igF?((totL/top10.length+totC/top10.length)/igF*100):0;
+    const maxL=top10.reduce((m,p)=>Math.max(m,p.likes||0),1);
+
+    document.getElementById('ig-banner-meta').innerHTML=`${igF} Followers · ${igP} Posts<br>${eng.toFixed(2)}% Engagement Rate<br>Stand ${ds}`;
+    document.getElementById('ig-followers').textContent=fmtN(igF);
+    document.getElementById('ig-total-posts').textContent=fmtN(igP);
+    document.getElementById('ig-total-likes').textContent=fmtN(totL);
+    document.getElementById('ig-total-comments').textContent=fmtN(totC);
+    document.getElementById('ig-eng-rate').textContent=eng.toFixed(2)+'%';
+    document.getElementById('ov-ig-eng').textContent=eng.toFixed(2)+'%';
+    document.getElementById('ov-ig-val').textContent=eng.toFixed(2)+'%';
+    document.getElementById('ov-ig-sub').textContent=`${igF} Followers · ${igP} Posts`;
+
+    const upIG=[
+      {title:'Countdown Track 3',                      badge:'tbadge-story',    type:'Story',    date:'Do 09.04 · 09:00',extra:''},
+      {title:'Where Does Progressive House Come From',  badge:'tbadge-carousel', type:'Carousel', date:'Di 08.04',extra:'<div class="chron-date" style="font-size:.65rem;margin-top:3px;color:var(--c1)">↑ Boost 15€</div>'},
+    ];
+    let igHtml=upIG.map(u=>`<div class="chron-item upcoming">
+      <div class="chron-num">—</div>
+      <div class="chron-main"><div class="chron-title">${u.title}</div>
+        <div class="chron-sub"><span class="tbadge ${u.badge}">${u.type}</span>
+          <span class="tbadge tbadge-upcoming">Geplant</span>
+          <span class="chron-date">${u.date}</span></div></div>
+      <div class="chron-stats">${u.extra}</div>
+    </div>`).join('');
+    top10.forEach((p,i)=>{
+      const best=(p.likes||0)===maxL;
+      const badge=p.is_video?'tbadge-video':'tbadge-bild';
+      const type=p.is_video?'Video':'Bild';
+      const cap=(p.caption||'').slice(0,55)+((p.caption||'').length>55?'…':'');
+      const ew=Math.round((p.likes||0)/maxL*100);
+      const star=best?'<span style="font-size:.72rem;color:var(--c2);font-weight:700">★ Best Performer</span>':'';
+      igHtml+=`<div class="chron-item">
+        <div class="chron-num">${String(i+1).padStart(2,'0')}</div>
+        <div class="chron-main"><div class="chron-title">${cap||'—'}</div>
+          <div class="chron-sub"><span class="tbadge ${badge}">${type}</span>
+            <span class="chron-date">${p.date}</span>${star}</div>
+          <div class="eng-bar"><div class="eng-fill" style="width:${ew}%;background:var(--c2)"></div></div></div>
+        <div class="chron-stats"><div class="chron-stat-row">
+          <div class="cs-item"><div class="v" style="color:var(--c2)">${fmtN(p.likes)}</div><div class="l">Likes</div></div>
+          <div class="cs-item"><div class="v">${fmtN(p.comments)}</div><div class="l">Komm.</div></div>
+        </div></div></div>`;
+    });
+    document.getElementById('ig-chron-list').innerHTML=igHtml;
+
+    const igAsc=[...top10].sort((a,b)=>a.date.localeCompare(b.date));
+    igLikesChartInst.data.labels=igAsc.map(p=>p.date.slice(5));
+    igLikesChartInst.data.datasets[0].data=igAsc.map(p=>p.likes||0);
+    igLikesChartInst.update();
+    igCommsChartInst.data.labels=igAsc.map(p=>p.date.slice(5));
+    igCommsChartInst.data.datasets[0].data=igAsc.map(p=>p.comments||0);
+    igCommsChartInst.update();
+  }
+}
+loadLiveData();
 </script>
 </body>
 </html>
