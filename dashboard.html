@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Clapsparrow — Dashboard</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.min.js"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;900&display=swap');
 
@@ -542,7 +543,7 @@
 
   <div class="ov-hero">
     <div class="ov-hero-left">
-      <h1>Claps&shy;sparrow</h1>
+      <canvas id="logo-3d" style="display:block;margin-bottom:12px"></canvas>
       <p>Social Media Dashboard &nbsp;·&nbsp; <span id="ov-date">06.04.2026</span></p>
     </div>
     <div class="ov-hero-right">
@@ -1505,6 +1506,117 @@ async function loadLiveData() {
   }
 }
 loadLiveData();
+
+// ── 3D CHROME LOGO ──
+(function() {
+  const canvas = document.getElementById('logo-3d');
+  if (!canvas || typeof THREE === 'undefined') return;
+
+  const H = 170;
+  const getW = () => Math.max(canvas.parentElement.clientWidth - 52, 200);
+
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.6;
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 50);
+  camera.position.z = 5.8;
+
+  // Lights for chrome reflections
+  const ambient = new THREE.AmbientLight(0xffffff, 0.4);
+  scene.add(ambient);
+  const L1 = new THREE.PointLight(0xffffff, 10, 20);
+  const L2 = new THREE.PointLight(0x88aaff, 6, 15);
+  const L3 = new THREE.PointLight(0xffdd88, 5, 15);
+  const L4 = new THREE.PointLight(0xffffff, 8, 18);
+  L1.position.set(5, 4, 5);
+  L2.position.set(-5, -3, 4);
+  L3.position.set(0, 5, 3);
+  L4.position.set(-4, 1, 4);
+  scene.add(L1, L2, L3, L4);
+
+  const group = new THREE.Group();
+  scene.add(group);
+
+  const chromeMat = new THREE.MeshPhysicalMaterial({
+    color: 0xb8c4cc, metalness: 1.0, roughness: 0.04, reflectivity: 1.0
+  });
+
+  // Process logo PNG: white bg → transparent, black logo → chrome silver
+  const img = new Image();
+  img.onload = function() {
+    const ic = document.createElement('canvas');
+    ic.width = img.width; ic.height = img.height;
+    const ctx = ic.getContext('2d');
+    ctx.drawImage(img, 0, 0);
+    const id = ctx.getImageData(0, 0, ic.width, ic.height);
+    const d = id.data;
+    for (let i = 0; i < d.length; i += 4) {
+      const br = d[i] * 0.299 + d[i+1] * 0.587 + d[i+2] * 0.114;
+      d[i] = 210; d[i+1] = 218; d[i+2] = 225;   // silver-chrome tint
+      d[i+3] = Math.max(0, Math.min(255, (255 - br) * 1.4)); // dark = opaque
+    }
+    ctx.putImageData(id, 0, 0);
+
+    const tex = new THREE.CanvasTexture(ic);
+    const ratio = img.width / img.height;
+    const W3 = 4.6, H3 = 4.6 / ratio, D = 0.28;
+
+    const frontMat = new THREE.MeshPhysicalMaterial({
+      map: tex, transparent: true, alphaTest: 0.02,
+      metalness: 1.0, roughness: 0.04, color: 0xd0dae4, side: THREE.DoubleSide
+    });
+
+    const geo = new THREE.BoxGeometry(W3, H3, D);
+    const mesh = new THREE.Mesh(geo, [chromeMat, chromeMat, chromeMat, chromeMat, frontMat, frontMat]);
+    group.add(mesh);
+
+    // Edge glow
+    const edges = new THREE.EdgesGeometry(geo);
+    group.add(new THREE.LineSegments(edges,
+      new THREE.LineBasicMaterial({ color: 0xddeeff, transparent: true, opacity: 0.6 })
+    ));
+  };
+  img.src = 'logo.png';
+
+  // Rotation
+  let speed = 0.008, targetSpeed = 0.008;
+  canvas.style.cursor = 'pointer';
+  canvas.addEventListener('mouseenter', () => targetSpeed = 0.05);
+  canvas.addEventListener('mouseleave', () => targetSpeed = 0.008);
+
+  function resize() {
+    const W = getW();
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
+    renderer.setSize(W, H, false);
+    camera.aspect = W / H;
+    camera.updateProjectionMatrix();
+  }
+
+  const t0 = Date.now();
+  function animate() {
+    requestAnimationFrame(animate);
+    const t = (Date.now() - t0) / 1000;
+    speed += (targetSpeed - speed) * 0.07;
+    group.rotation.y += speed;
+    group.rotation.x = Math.sin(t * 0.45) * 0.09;
+
+    // Animate lights → dynamic chrome reflections
+    L1.position.x = Math.sin(t * 0.5) * 6;
+    L1.position.y = Math.cos(t * 0.32) * 5;
+    L3.position.x = Math.cos(t * 0.38) * 4;
+    L4.position.y = Math.sin(t * 0.27) * 4;
+
+    renderer.render(scene, camera);
+  }
+
+  resize();
+  animate();
+  window.addEventListener('resize', resize);
+})();
 </script>
 </body>
 </html>
