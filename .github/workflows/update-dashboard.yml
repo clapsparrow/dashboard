@@ -29,9 +29,12 @@ jobs:
 
       # 4. Instagram-Session aus Secret wiederherstellen (falls vorhanden)
       - name: Restore Instagram session
-        if: ${{ secrets.INSTAGRAM_SESSION != '' }}
+        env:
+          INSTAGRAM_SESSION: ${{ secrets.INSTAGRAM_SESSION }}
         run: |
-          echo "${{ secrets.INSTAGRAM_SESSION }}" | base64 -d > session-clapsparrow
+          if [ -n "$INSTAGRAM_SESSION" ]; then
+            echo "$INSTAGRAM_SESSION" | base64 -d > session-clapsparrow
+          fi
 
       # 5. SoundCloud-Daten holen
       - name: Fetch SoundCloud data
