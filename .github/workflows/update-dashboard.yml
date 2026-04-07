@@ -1,0 +1,57 @@
+name: Dashboard Auto-Update
+
+on:
+  # Täglich um 08:00 Uhr (UTC = 10:00 MESZ)
+  schedule:
+    - cron: '0 8 * * *'
+  # Manuell auslösbar über GitHub UI
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Repo auschecken
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2. Python einrichten
+      - name: Python Setup
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      # 3. Abhängigkeiten installieren
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      # 4. Instagram-Session aus Secret wiederherstellen (falls vorhanden)
+      - name: Restore Instagram session
+        if: ${{ secrets.INSTAGRAM_SESSION != '' }}
+        run: |
+          echo "${{ secrets.INSTAGRAM_SESSION }}" | base64 -d > session-clapsparrow
+
+      # 5. SoundCloud-Daten holen
+      - name: Fetch SoundCloud data
+        run: python soundcloud_analyze.py
+        continue-on-error: true   # Nicht stoppen wenn SC blockiert
+
+      # 6. Instagram-Daten holen
+      - name: Fetch Instagram data
+        run: python instagram_analyze.py
+        continue-on-error: true   # Nicht stoppen wenn IG blockiert
+
+      # 7. Dashboard generieren
+      - name: Generate dashboard
+        run: python generate_dashboard.py
+
+      # 8. Geänderte Dateien committen & pushen
+      - name: Commit & push updated dashboard
+        run: |
+          git config user.name  "Dashboard Bot"
+          git config user.email "bot@clapsparrow.de"
+          git add dashboard.html soundcloud_data.json instagram_data.json
+          git diff --staged --quiet || git commit -m "chore: auto-update dashboard $(date +'%d.%m.%Y')"
+          git push

@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__mcp-registry__search_mcp_registry",
+      "Bash(python3 -c \":*)",
+      "Bash(python3 generate_dashboard.py)",
+      "Bash(python3:*)",
+      "WebSearch",
+      "Bash(pip3 install:*)",
+      "Bash(open \"/Users/leonmichel/Desktop/claude code/dashboard.html\")"
+    ]
+  }
+}

@@ -1,0 +1,748 @@
+{
+  "profile": {
+    "avatar_url": "https://i1.sndcdn.com/avatars-lP8SRoojjLs5R0FW-a5Ci4w-large.jpg",
+    "city": "Bochum",
+    "comments_count": 0,
+    "country_code": "DE",
+    "created_at": null,
+    "creator_subscriptions": [
+      {
+        "product": {
+          "id": "creator-pro-unlimited"
+        }
+      }
+    ],
+    "creator_subscription": {
+      "product": {
+        "id": "creator-pro-unlimited"
+      }
+    },
+    "description": "Booking @ clapsparrow@gmail.com\nCoFounder of Botanical Beats\nPart of PAVOIA Festival\nPlayed at:\nPfaeff -  Cologne\nGoethebunker - Essen\nPavoia Festival 2025 - Poland\nSchlegel Kultur Club - Bochum\nCafeEden - Bochum\nPavoia Festival 2024 - Poland\nHIND - Gelsenkirchen\nSchumacher Club - Bochum\nASTA Sommerfest - Botanical Beats Stage\nAMP - Muenster\nPavoia Festival 2023 - Poland\nTante Emma Events - Bochum\nContrast - Konstanz\nRotunde - Bochum",
+    "followers_count": 232,
+    "followings_count": 329,
+    "first_name": "Prog. House, UK House, Trance",
+    "full_name": "Prog. House, UK House, Trance",
+    "groups_count": 0,
+    "id": 822275953,
+    "kind": "user",
+    "last_modified": "2026-04-02T21:32:19Z",
+    "last_name": "",
+    "likes_count": 377,
+    "playlist_likes_count": 11,
+    "permalink": "clapsparrow",
+    "permalink_url": "https://soundcloud.com/clapsparrow",
+    "playlist_count": 7,
+    "reposts_count": null,
+    "track_count": 20,
+    "uri": "https://api.soundcloud.com/users/soundcloud%3Ausers%3A822275953",
+    "urn": "soundcloud:users:822275953",
+    "username": "Clapsparrow",
+    "verified": false,
+    "visuals": {
+      "urn": "soundcloud:users:822275953",
+      "enabled": true,
+      "visuals": [
+        {
+          "urn": "soundcloud:visuals:193481148",
+          "entry_time": 0,
+          "visual_url": "https://i1.sndcdn.com/visuals-000822275953-fyRihq-original.jpg"
+        }
+      ],
+      "tracking": null
+    },
+    "badges": {
+      "pro": false,
+      "creator_mid_tier": false,
+      "pro_unlimited": true,
+      "verified": false
+    },
+    "station_urn": "soundcloud:system-playlists:artist-stations:822275953",
+    "station_permalink": "artist-stations:822275953",
+    "date_of_birth": null
+  },
+  "tracks": [
+    {
+      "artwork_url": "https://i1.sndcdn.com/artworks-8mKwcNutpOnCPfUH-96pa3w-large.jpg",
+      "caption": null,
+      "commentable": true,
+      "comment_count": 2,
+      "created_at": "2026-02-24T18:27:19Z",
+      "description": "This is the second Track of our first EP - I wanna feel it.\n\nPlease leave a comment or a like if you want to support us <3 \n\nThe last track of the EP is coming next Friday",
+      "downloadable": false,
+      "download_count": 0,
+      "duration": 222903,
+      "full_duration": 222902,
+      "embeddable_by": "all",
+      "genre": "House",
+      "has_downloads_left": false,
+      "id": 2272707032,
+      "kind": "track",
+      "label_name": "",
+      "last_modified": "2026-04-02T20:16:00Z",
+      "license": "all-rights-reserved",
+      "likes_count": 11,
+      "permalink": "never-let-me-go",
+      "permalink_url": "https://soundcloud.com/clapsparrow/never-let-me-go",
+      "playback_count": 226,
+      "public": true,
+      "publisher_metadata": {
+        "id": 2272707032,
+        "urn": "soundcloud:tracks:2272707032",
+        "artist": "Clapsparrow"
+      },
+      "purchase_title": null,
+      "purchase_url": null,
+      "release_date": null,
+      "reposts_count": 4,
+      "secret_token": null,
+      "sharing": "public",
+      "state": "finished",
+      "streamable": true,
+      "tag_list": "\"progressive house \" \"Uk house \" Garage Ukg",
+      "title": "Never let me Go",
+      "uri": "https://api.soundcloud.com/tracks/soundcloud%3Atracks%3A2272707032",
+      "urn": "soundcloud:tracks:2272707032",
+      "user_id": 822275953,
+      "visuals": null,
+      "waveform_url": "https://wave.sndcdn.com/Ic2AqNwAiAaS_m.json",
+      "display_date": "2026-04-02T19:55:03Z",
+      "media": {
+        "transcodings": [
+          {
+            "url": "https://api-v2.soundcloud.com/media/soundcloud:tracks:2272707032/f33f1a94-026a-4437-9eff-85358860d85e/stream/hls",
+            "preset": "aac_160k",
+            "duration": 222903,
+            "snipped": false,
+            "format": {
+              "protocol": "hls",
+              "mime_type": "audio/mp4; codecs=\"mp4a.40.2\""
+            },
+            "quality": "sq",
+            "is_legacy_transcoding": false
+          },
+          {
+            "url": "https://api-v2.soundcloud.com/media/soundcloud:tracks:2272707032/35ecc7c3-0596-4314-9b9a-b12030243822/stream/hls",
+            "preset": "abr_sq",
+            "duration": 222903,
+            "snipped": false,
+            "format": {
+              "protocol": "hls",
+              "mime_type": "audio/mpegurl"
+            },
+            "quality": "sq",
+            "is_legacy_transcoding": false
+          },
+          {
+            "url": "https://api-v2.soundcloud.com/media/soundcloud:tracks:2272707032/e646f5d1-c8f7-4eb3-ad6e-19faecb18c86/stream/hls",
+            "preset": "mp3_1_0",
+            "duration": 222902,
+            "snipped": false,
+            "format": {
+              "protocol": "hls",
+              "mime_type": "audio/mpeg"
+            },
+            "quality": "sq",
+            "is_legacy_transcoding": true
+          },
+          {
+            "url": "https://api-v2.soundcloud.com/media/soundcloud:tracks:2272707032/e646f5d1-c8f7-4eb3-ad6e-19faecb18c86/stream/progressive",
+            "preset": "mp3_1_0",
+            "duration": 222902,
+            "snipped": false,
+            "format": {
+              "protocol": "progressive",
+              "mime_type": "audio/mpeg"
+            },
+            "quality": "sq",
+            "is_legacy_transcoding": true
+          }
+        ]
+      },
+      "station_urn": "soundcloud:system-playlists:track-stations:2272707032",
+      "station_permalink": "track-stations:2272707032",
+      "track_authorization": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJnZW8iOiJVUyIsInN1YiI6IiIsInJpZCI6ImU1NTA5NTNjLTJhNDktNDJiZC1hMjUwLTA0YTU2OTg1YjhkYiIsImlhdCI6MTc3NTQ0ODI1OX0.cxF0KCcgFFETHGrS_Y0Ah4rF_UY9XEVLqtCcpRrDUQo",
+      "monetization_model": "BLACKBOX",
+      "policy": "MONETIZE",
+      "user": {
+        "avatar_url": "https://i1.sndcdn.com/avatars-lP8SRoojjLs5R0FW-a5Ci4w-large.jpg",
+        "first_name": "Prog. House, UK House, Trance",
+        "followers_count": 232,
+        "full_name": "Prog. House, UK House, Trance",
+        "id": 822275953,
+        "kind": "user",
+        "last_modified": "2026-04-02T21:32:19Z",
+        "last_name": "",
+        "permalink": "clapsparrow",
+        "permalink_url": "https://soundcloud.com/clapsparrow",
+        "uri": "https://api.soundcloud.com/users/soundcloud%3Ausers%3A822275953",
+        "urn": "soundcloud:users:822275953",
+        "username": "Clapsparrow",
+        "verified": false,
+        "city": "Bochum",
+        "country_code": "DE",
+        "badges": {
+          "pro": false,
+          "creator_mid_tier": false,
+          "pro_unlimited": true,
+          "verified": false
+        },
+        "station_urn": "soundcloud:system-playlists:artist-stations:822275953",
+        "station_permalink": "artist-stations:822275953"
+      }
+    },
+    {
+      "artwork_url": "https://i1.sndcdn.com/artworks-8mKwcNutpOnCPfUH-96pa3w-large.jpg",
+      "caption": null,
+      "commentable": true,
+      "comment_count": 5,
+      "created_at": "2026-02-08T23:10:12Z",
+      "description": "",
+      "downloadable": false,
+      "download_count": 0,
+      "duration": 241701,
+      "full_duration": 241685,
+      "embeddable_by": "all",
+      "genre": "Electronic",
+      "has_downloads_left": false,
+      "id": 2262643055,
+      "kind": "track",
+      "label_name": "",
+      "last_modified": "2026-03-27T06:02:33Z",
+      "license": "all-rights-reserved",
+      "likes_count": 25,
+      "permalink": "take-my-time",
+      "permalink_url": "https://soundcloud.com/clapsparrow/take-my-time",
+      "playback_count": 289,
+      "public": true,
+      "publisher_metadata": {
+        "id": 2262643055,
+        "urn": "soundcloud:tracks:2262643055",
+        "artist": "Clapsparrow"
+      },
+      "purchase_title": null,
+      "purchase_url": null,
+      "release_date": null,
+      "reposts_count": 14,
+      "secret_token": null,
+      "sharing": "public",
+      "state": "finished",
+      "streamable": true,
+      "tag_list": "UKG,House,Garage",
+      "title": "Take my time",
+      "uri": "https://api.soundcloud.com/tracks/soundcloud%3Atracks%3A2262643055",
+      "urn": "soundcloud:tracks:2262643055",
+      "user_id": 822275953,
+      "visuals": null,
+      "waveform_url": "https://wave.sndcdn.com/lvIFcC8N0wdq_m.json",
+      "display_date": "2026-03-27T06:02:33Z",
+      "media": {
+        "transcodings": [
+          {
+            "url": "https://api-v2.soundcloud.com/media/soundcloud:tracks:2262643055/512d3073-3bb5-4a8b-aad2-535e72aa3753/stream/hls",
+            "preset": "aac_160k",
+            "duration": 241701,
+            "snipped": false,
+            "format": {
+              "protocol": "hls",
+              "mime_type": "audio/mp4; codecs=\"mp4a.40.2\""
+            },
+            "quality": "sq",
+            "is_legacy_transcoding": false
+          },
+          {
+            "url": "https://api-v2.soundcloud.com/media/soundcloud:tracks:2262643055/65387bb9-ddad-4ce1-b64b-f526367b2397/stream/hls",
+            "preset": "abr_sq",
+            "duration": 241701,
+            "snipped": false,
+            "format": {
+              "protocol": "hls",
+              "mime_type": "audio/mpegurl"
+            },
+            "quality": "sq",
+            "is_legacy_transcoding": false
+          },
+          {
+            "url": "https://api-v2.soundcloud.com/media/soundcloud:tracks:2262643055/17264a99-b44e-4533-9bbc-eb6c21c3d5ed/stream/hls",
+            "preset": "opus_0_0",
+            "duration": 241662,
+            "snipped": false,
+            "format": {
+              "protocol": "hls",
+              "mime_type": "audio/ogg; codecs=\"opus\""
+            },
+            "quality": "sq",
+            "is_legacy_transcoding": true
+          },
+          {
+            "url": "https://api-v2.soundcloud.com/media/soundcloud:tracks:2262643055/6c7ec2cc-d616-4795-89b4-1b7e6cdcdada/stream/hls",
+            "preset": "mp3_1_0",
+            "duration": 241685,
+            "snipped": false,
+            "format": {
+              "protocol": "hls",
+              "mime_type": "audio/mpeg"
+            },
+            "quality": "sq",
+            "is_legacy_transcoding": true
+          },
+          {
+            "url": "https://api-v2.soundcloud.com/media/soundcloud:tracks:2262643055/6c7ec2cc-d616-4795-89b4-1b7e6cdcdada/stream/progressive",
+            "preset": "mp3_1_0",
+            "duration": 241685,
+            "snipped": false,
+            "format": {
+              "protocol": "progressive",
+              "mime_type": "audio/mpeg"
+            },
+            "quality": "sq",
+            "is_legacy_transcoding": true
+          }
+        ]
+      },
+      "station_urn": "soundcloud:system-playlists:track-stations:2262643055",
+      "station_permalink": "track-stations:2262643055",
+      "track_authorization": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJnZW8iOiJVUyIsInN1YiI6IiIsInJpZCI6IjA0M2RmM2E5LTRjZGQtNDlmOC04MDk0LTYyMjRhNzAwZWQ3ZCIsImlhdCI6MTc3NTQ0ODI1OX0.Rot873HicnVJskFEzBf8VPmB9yCkBRZ6OF0ptSIXT4I",
+      "monetization_model": "BLACKBOX",
+      "policy": "MONETIZE",
+      "user": {
+        "avatar_url": "https://i1.sndcdn.com/avatars-lP8SRoojjLs5R0FW-a5Ci4w-large.jpg",
+        "first_name": "Prog. House, UK House, Trance",
+        "followers_count": 232,
+        "full_name": "Prog. House, UK House, Trance",
+        "id": 822275953,
+        "kind": "user",
+        "last_modified": "2026-04-02T21:32:19Z",
+        "last_name": "",
+        "permalink": "clapsparrow",
+        "permalink_url": "https://soundcloud.com/clapsparrow",
+        "uri": "https://api.soundcloud.com/users/soundcloud%3Ausers%3A822275953",
+        "urn": "soundcloud:users:822275953",
+        "username": "Clapsparrow",
+        "verified": false,
+        "city": "Bochum",
+        "country_code": "DE",
+        "badges": {
+          "pro": false,
+          "creator_mid_tier": false,
+          "pro_unlimited": true,
+          "verified": false
+        },
+        "station_urn": "soundcloud:system-playlists:artist-stations:822275953",
+        "station_permalink": "artist-stations:822275953"
+      }
+    },
+    {
+      "artwork_url": "https://i1.sndcdn.com/artworks-O6AnbifN2eqcY4yC-pivV8A-large.jpg",
+      "caption": null,
+      "commentable": true,
+      "comment_count": 2,
+      "created_at": "2026-03-17T15:39:52Z",
+      "description": "",
+      "downloadable": false,
+      "download_count": 0,
+      "duration": 3660997,
+      "full_duration": 3660982,
+      "embeddable_by": "all",
+      "genre": "Garage/House",
+      "has_downloads_left": false,
+      "id": 2285532698,
+      "kind": "track",
+      "label_name": "",
+      "last_modified": "2026-03-19T07:56:55Z",
+      "license": "all-rights-reserved",
+      "likes_count": 6,
+      "permalink": "urvb-1",
+      "permalink_url": "https://soundcloud.com/clapsparrow/urvb-1",
+      "playback_count": 48,
+      "public": true,
+      "publisher_metadata": {
+        "id": 2285532698,
+        "urn": "soundcloud:tracks:2285532698",
+        "artist": "Clapsparrow"
+      },
+      "purchase_title": null,
+      "purchase_url": null,
+      "release_date": null,
+      "reposts_count": 1,
+      "secret_token": null,
+      "sharing": "public",
+      "state": "finished",
+      "streamable": true,
+      "tag_list": "House Garage Trance Techno",
+      "title": "Clapsparrow @URVB -13.03.26 // Vinyl Only",
+      "uri": "https://api.soundcloud.com/tracks/soundcloud%3Atracks%3A2285532698",
+      "urn": "soundcloud:tracks:2285532698",
+      "user_id": 822275953,
+      "visuals": null,
+      "waveform_url": "https://wave.sndcdn.com/sWQlmOFxjg4x_m.json",
+      "display_date": "2026-03-17T15:39:52Z",
+      "media": {
+        "transcodings": [
+          {
+            "url": "https://api-v2.soundcloud.com/media/soundcloud:tracks:2285532698/c9e50ee8-f8e6-412d-8afd-c0077abf9b50/stream/hls",
+            "preset": "aac_160k",
+            "duration": 3660997,
+            "snipped": false,
+            "format": {
+              "protocol": "hls",
+              "mime_type": "audio/mp4; codecs=\"mp4a.40.2\""
+            },
+            "quality": "sq",
+            "is_legacy_transcoding": false
+          },
+          {
+            "url": "https://api-v2.soundcloud.com/media/soundcloud:tracks:2285532698/3e8538a3-189e-43f0-b80b-dc4bb548ac38/stream/hls",
+            "preset": "abr_sq",
+            "duration": 3660997,
+            "snipped": false,
+            "format": {
+              "protocol": "hls",
+              "mime_type": "audio/mpegurl"
+            },
+            "quality": "sq",
+            "is_legacy_transcoding": false
+          },
+          {
+            "url": "https://api-v2.soundcloud.com/media/soundcloud:tracks:2285532698/ad5449bd-ab45-4ae4-a1a3-8dbbaf4fc980/stream/hls",
+            "preset": "mp3_1_0",
+            "duration": 3660982,
+            "snipped": false,
+            "format": {
+              "protocol": "hls",
+              "mime_type": "audio/mpeg"
+            },
+            "quality": "sq",
+            "is_legacy_transcoding": true
+          },
+          {
+            "url": "https://api-v2.soundcloud.com/media/soundcloud:tracks:2285532698/ad5449bd-ab45-4ae4-a1a3-8dbbaf4fc980/stream/progressive",
+            "preset": "mp3_1_0",
+            "duration": 3660982,
+            "snipped": false,
+            "format": {
+              "protocol": "progressive",
+              "mime_type": "audio/mpeg"
+            },
+            "quality": "sq",
+            "is_legacy_transcoding": true
+          }
+        ]
+      },
+      "station_urn": "soundcloud:system-playlists:track-stations:2285532698",
+      "station_permalink": "track-stations:2285532698",
+      "track_authorization": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJnZW8iOiJVUyIsInN1YiI6IiIsInJpZCI6IjJiMGU0MDY0LWI2YmQtNDVhNS05OGY1LWRhNTI1MGVmNGNlYiIsImlhdCI6MTc3NTQ0ODI1OX0.39oOdML0lwl7KCwAF96C5nwTycFrz6bFqpjeNdJQosc",
+      "monetization_model": "BLACKBOX",
+      "policy": "MONETIZE",
+      "user": {
+        "avatar_url": "https://i1.sndcdn.com/avatars-lP8SRoojjLs5R0FW-a5Ci4w-large.jpg",
+        "first_name": "Prog. House, UK House, Trance",
+        "followers_count": 232,
+        "full_name": "Prog. House, UK House, Trance",
+        "id": 822275953,
+        "kind": "user",
+        "last_modified": "2026-04-02T21:32:19Z",
+        "last_name": "",
+        "permalink": "clapsparrow",
+        "permalink_url": "https://soundcloud.com/clapsparrow",
+        "uri": "https://api.soundcloud.com/users/soundcloud%3Ausers%3A822275953",
+        "urn": "soundcloud:users:822275953",
+        "username": "Clapsparrow",
+        "verified": false,
+        "city": "Bochum",
+        "country_code": "DE",
+        "badges": {
+          "pro": false,
+          "creator_mid_tier": false,
+          "pro_unlimited": true,
+          "verified": false
+        },
+        "station_urn": "soundcloud:system-playlists:artist-stations:822275953",
+        "station_permalink": "artist-stations:822275953"
+      }
+    },
+    {
+      "artwork_url": "https://i1.sndcdn.com/artworks-vD6yls5KTLcOQcdK-GIOMFQ-large.jpg",
+      "caption": null,
+      "commentable": true,
+      "comment_count": 29,
+      "created_at": "2025-11-19T22:59:06Z",
+      "description": "",
+      "downloadable": false,
+      "download_count": 0,
+      "duration": 257189,
+      "full_duration": 257176,
+      "embeddable_by": "all",
+      "genre": "Trance",
+      "has_downloads_left": false,
+      "id": 2215546382,
+      "kind": "track",
+      "label_name": "",
+      "last_modified": "2026-02-07T16:15:52Z",
+      "license": "all-rights-reserved",
+      "likes_count": 60,
+      "permalink": "kick-back",
+      "permalink_url": "https://soundcloud.com/clapsparrow/kick-back",
+      "playback_count": 2927,
+      "public": true,
+      "publisher_metadata": {
+        "id": 2215546382,
+        "urn": "soundcloud:tracks:2215546382",
+        "artist": "Clapsparrow",
+        "explicit": false
+      },
+      "purchase_title": "Free Download",
+      "purchase_url": "https://hypeddit.com/5m8rob",
+      "release_date": null,
+      "reposts_count": 6,
+      "secret_token": null,
+      "sharing": "public",
+      "state": "finished",
+      "streamable": true,
+      "tag_list": "",
+      "title": "Kick Back [Free DL]",
+      "uri": "https://api.soundcloud.com/tracks/soundcloud%3Atracks%3A2215546382",
+      "urn": "soundcloud:tracks:2215546382",
+      "user_id": 822275953,
+      "visuals": null,
+      "waveform_url": "https://wave.sndcdn.com/qOH0eb4SKGUO_m.json",
+      "display_date": "2026-02-05T12:29:55Z",
+      "media": {
+        "transcodings": [
+          {
+            "url": "https://api-v2.soundcloud.com/media/soundcloud:tracks:2215546382/d00104bf-304e-4c7c-9eff-96e44e2c687a/stream/hls",
+            "preset": "aac_160k",
+            "duration": 257189,
+            "snipped": false,
+            "format": {
+              "protocol": "hls",
+              "mime_type": "audio/mp4; codecs=\"mp4a.40.2\""
+            },
+            "quality": "sq",
+            "is_legacy_transcoding": false
+          },
+          {
+            "url": "https://api-v2.soundcloud.com/media/soundcloud:tracks:2215546382/ea5b584f-f673-4723-a1ef-af093ee99b32/stream/hls",
+            "preset": "abr_sq",
+            "duration": 257189,
+            "snipped": false,
+            "format": {
+              "protocol": "hls",
+              "mime_type": "audio/mpegurl"
+            },
+            "quality": "sq",
+            "is_legacy_transcoding": false
+          },
+          {
+            "url": "https://api-v2.soundcloud.com/media/soundcloud:tracks:2215546382/65168043-ea7a-4aa8-9332-f0e247f52e9a/stream/hls",
+            "preset": "opus_0_0",
+            "duration": 257149,
+            "snipped": false,
+            "format": {
+              "protocol": "hls",
+              "mime_type": "audio/ogg; codecs=\"opus\""
+            },
+            "quality": "sq",
+            "is_legacy_transcoding": true
+          },
+          {
+            "url": "https://api-v2.soundcloud.com/media/soundcloud:tracks:2215546382/6f2d4226-1171-40bd-af39-6d3b47831a77/stream/hls",
+            "preset": "mp3_1_0",
+            "duration": 257176,
+            "snipped": false,
+            "format": {
+              "protocol": "hls",
+              "mime_type": "audio/mpeg"
+            },
+            "quality": "sq",
+            "is_legacy_transcoding": true
+          },
+          {
+            "url": "https://api-v2.soundcloud.com/media/soundcloud:tracks:2215546382/6f2d4226-1171-40bd-af39-6d3b47831a77/stream/progressive",
+            "preset": "mp3_1_0",
+            "duration": 257176,
+            "snipped": false,
+            "format": {
+              "protocol": "progressive",
+              "mime_type": "audio/mpeg"
+            },
+            "quality": "sq",
+            "is_legacy_transcoding": true
+          }
+        ]
+      },
+      "station_urn": "soundcloud:system-playlists:track-stations:2215546382",
+      "station_permalink": "track-stations:2215546382",
+      "track_authorization": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJnZW8iOiJVUyIsInN1YiI6IiIsInJpZCI6ImIwNzBmMDJkLTJiOTItNDJiOC1hNzdmLWUyZWVjNDQ1NWFjNSIsImlhdCI6MTc3NTQ0ODI1OX0.THxNkxefZfZiVhDIngxIkNCxW3yUwwzAOUo0L8ZmSTU",
+      "monetization_model": "BLACKBOX",
+      "policy": "MONETIZE",
+      "user": {
+        "avatar_url": "https://i1.sndcdn.com/avatars-lP8SRoojjLs5R0FW-a5Ci4w-large.jpg",
+        "first_name": "Prog. House, UK House, Trance",
+        "followers_count": 232,
+        "full_name": "Prog. House, UK House, Trance",
+        "id": 822275953,
+        "kind": "user",
+        "last_modified": "2026-04-02T21:32:19Z",
+        "last_name": "",
+        "permalink": "clapsparrow",
+        "permalink_url": "https://soundcloud.com/clapsparrow",
+        "uri": "https://api.soundcloud.com/users/soundcloud%3Ausers%3A822275953",
+        "urn": "soundcloud:users:822275953",
+        "username": "Clapsparrow",
+        "verified": false,
+        "city": "Bochum",
+        "country_code": "DE",
+        "badges": {
+          "pro": false,
+          "creator_mid_tier": false,
+          "pro_unlimited": true,
+          "verified": false
+        },
+        "station_urn": "soundcloud:system-playlists:artist-stations:822275953",
+        "station_permalink": "artist-stations:822275953"
+      }
+    },
+    {
+      "artwork_url": "https://i1.sndcdn.com/artworks-p6NX5ZVaZtI98bye-QzD1Kg-large.jpg",
+      "caption": null,
+      "commentable": true,
+      "comment_count": 2,
+      "created_at": "2024-11-06T15:49:49Z",
+      "description": "Was war das bitte für ein Abriss? 🔥❇️ Danke das ihr alle da wart, die Stimmung komplett geil und eure Energy auf dem Dancer ne stabile 10/10 ! Wir sind total geflasht von euch allen und der Party. 🌿 Danke auch an das ganze Team vom @schlegel_kultur_club für eure hilfe. Wir freuen uns schon jetzt riesig auf die nächste Veranstaltung im nächsten Jahr. Aber jetzt heißt es erst mal: Winterpause für Botanical Beats. Bis ganz bald – wir freuen uns euch bald wieder willkommen heißen zu dürfen! ❤️",
+      "downloadable": false,
+      "download_count": 0,
+      "duration": 5350039,
+      "full_duration": 5350034,
+      "embeddable_by": "all",
+      "genre": "Techno",
+      "has_downloads_left": false,
+      "id": 1951042723,
+      "kind": "track",
+      "label_name": null,
+      "last_modified": "2024-11-07T10:02:47Z",
+      "license": "all-rights-reserved",
+      "likes_count": 33,
+      "permalink": "bass-und-blueten-schlegel",
+      "permalink_url": "https://soundcloud.com/clapsparrow/bass-und-blueten-schlegel",
+      "playback_count": 723,
+      "public": true,
+      "publisher_metadata": {
+        "id": 1951042723,
+        "urn": "soundcloud:tracks:1951042723",
+        "contains_music": true
+      },
+      "purchase_title": null,
+      "purchase_url": null,
+      "release_date": null,
+      "reposts_count": 1,
+      "secret_token": null,
+      "sharing": "public",
+      "state": "finished",
+      "streamable": true,
+      "tag_list": "",
+      "title": "BOtanical Beats - Bass Und Blüten @Schlegel Kultur Club Bochum",
+      "uri": "https://api.soundcloud.com/tracks/soundcloud%3Atracks%3A1951042723",
+      "urn": "soundcloud:tracks:1951042723",
+      "user_id": 822275953,
+      "visuals": null,
+      "waveform_url": "https://wave.sndcdn.com/twwnT7I0ulSv_m.json",
+      "display_date": "2024-11-07T10:02:47Z",
+      "media": {
+        "transcodings": [
+          {
+            "url": "https://api-v2.soundcloud.com/media/soundcloud:tracks:1951042723/a48c43cb-4f04-421a-809d-9f20c51a4a14/stream/hls",
+            "preset": "aac_160k",
+            "duration": 5350039,
+            "snipped": false,
+            "format": {
+              "protocol": "hls",
+              "mime_type": "audio/mp4; codecs=\"mp4a.40.2\""
+            },
+            "quality": "sq",
+            "is_legacy_transcoding": false
+          },
+          {
+            "url": "https://api-v2.soundcloud.com/media/soundcloud:tracks:1951042723/04acde32-a7dc-41f1-a77b-ce76b2c17be5/stream/hls",
+            "preset": "abr_sq",
+            "duration": 5350039,
+            "snipped": false,
+            "format": {
+              "protocol": "hls",
+              "mime_type": "audio/mpegurl"
+            },
+            "quality": "sq",
+            "is_legacy_transcoding": false
+          },
+          {
+            "url": "https://api-v2.soundcloud.com/media/soundcloud:tracks:1951042723/b59d7227-a605-40a4-a3e2-19016a3ea9cc/stream/hls",
+            "preset": "opus_0_0",
+            "duration": 5349999,
+            "snipped": false,
+            "format": {
+              "protocol": "hls",
+              "mime_type": "audio/ogg; codecs=\"opus\""
+            },
+            "quality": "sq",
+            "is_legacy_transcoding": true
+          },
+          {
+            "url": "https://api-v2.soundcloud.com/media/soundcloud:tracks:1951042723/da387e7e-3bf7-423b-b362-e051d98a9631/stream/hls",
+            "preset": "mp3_1_0",
+            "duration": 5350034,
+            "snipped": false,
+            "format": {
+              "protocol": "hls",
+              "mime_type": "audio/mpeg"
+            },
+            "quality": "sq",
+            "is_legacy_transcoding": true
+          },
+          {
+            "url": "https://api-v2.soundcloud.com/media/soundcloud:tracks:1951042723/da387e7e-3bf7-423b-b362-e051d98a9631/stream/progressive",
+            "preset": "mp3_1_0",
+            "duration": 5350034,
+            "snipped": false,
+            "format": {
+              "protocol": "progressive",
+              "mime_type": "audio/mpeg"
+            },
+            "quality": "sq",
+            "is_legacy_transcoding": true
+          }
+        ]
+      },
+      "station_urn": "soundcloud:system-playlists:track-stations:1951042723",
+      "station_permalink": "track-stations:1951042723",
+      "track_authorization": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJnZW8iOiJVUyIsInN1YiI6IiIsInJpZCI6ImQxZTc0ZTRkLTQwNjYtNGI3Mi05NWQxLWRkYTMxY2I2ODQ4MiIsImlhdCI6MTc3NTQ0ODI1OX0.kdYkmydhX93T-cOyfcSXtFzz6cXvmJnZz0i04oXGip8",
+      "monetization_model": "BLACKBOX",
+      "policy": "MONETIZE",
+      "user": {
+        "avatar_url": "https://i1.sndcdn.com/avatars-lP8SRoojjLs5R0FW-a5Ci4w-large.jpg",
+        "first_name": "Prog. House, UK House, Trance",
+        "followers_count": 232,
+        "full_name": "Prog. House, UK House, Trance",
+        "id": 822275953,
+        "kind": "user",
+        "last_modified": "2026-04-02T21:32:19Z",
+        "last_name": "",
+        "permalink": "clapsparrow",
+        "permalink_url": "https://soundcloud.com/clapsparrow",
+        "uri": "https://api.soundcloud.com/users/soundcloud%3Ausers%3A822275953",
+        "urn": "soundcloud:users:822275953",
+        "username": "Clapsparrow",
+        "verified": false,
+        "city": "Bochum",
+        "country_code": "DE",
+        "badges": {
+          "pro": false,
+          "creator_mid_tier": false,
+          "pro_unlimited": true,
+          "verified": false
+        },
+        "station_urn": "soundcloud:system-playlists:artist-stations:822275953",
+        "station_permalink": "artist-stations:822275953"
+      }
+    }
+  ],
+  "analyzed_at": "2026-04-06T00:03:33.746628"
+}

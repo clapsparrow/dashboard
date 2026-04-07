@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clapsparrow — Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;900&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --c0: #4A9ABF;   /* teal-blue     — Übersicht  */
+    --c1: #E07A52;   /* terracotta    — SoundCloud */
+    --c2: #C06A8A;   /* rose          — Instagram  */
+    --c3: #5A8EB8;   /* muted blue    — Releases   */
+    --c4: #4E9E7A;   /* sage green    — Content    */
+    --c5: #8A6EB8;   /* violet        — Budget     */
+    --ink:   #1A1818;
+    --mid:   #555;
+    --faint: #999;
+    --paper: #F4F1EC;
+    --white: #FEFCFA;
+    --sep:   #E2DDDA;
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Barlow', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  /* ═══════════════════════════
+     STICKY NAV
+  ═══════════════════════════ */
+  .nav {
+    position: sticky; top: 0; z-index: 200;
+    background: var(--ink);
+    display: flex; align-items: stretch;
+    overflow-x: auto;
+    border-bottom: 3px solid var(--ink);
+  }
+  .nav::-webkit-scrollbar { display: none; }
+
+  .nav-brand {
+    padding: 0 24px;
+    display: flex; align-items: center;
+    font-size: 0.7rem; font-weight: 900;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--paper);
+    border-right: 1px solid rgba(255,255,255,0.1);
+    white-space: nowrap; flex-shrink: 0;
+  }
+
+  .nav a {
+    display: flex; align-items: center; gap: 7px;
+    padding: 0 20px;
+    height: 48px;
+    font-size: 0.68rem; font-weight: 700;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    text-decoration: none;
+    color: rgba(255,255,255,0.35);
+    white-space: nowrap;
+    transition: color .2s, background .2s;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -3px;
+    position: relative;
+  }
+  .nav a .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    flex-shrink: 0; transition: opacity .2s;
+  }
+  /* dot colors */
+  .nav a[href="#overview"]   .dot { background: rgba(255,255,255,0.6); }
+  .nav a[href="#soundcloud"] .dot { background: var(--c1); }
+  .nav a[href="#instagram"]  .dot { background: var(--c2); }
+  .nav a[href="#releases"]   .dot { background: var(--c3); }
+  .nav a[href="#content"]    .dot { background: var(--c4); }
+  .nav a[href="#budget"]     .dot { background: var(--c5); }
+
+  .nav a:hover { color: rgba(255,255,255,.75); }
+
+  /* ACTIVE: solid color background block */
+  .nav a.active { color: #fff; }
+  .nav a[href="#overview"].active   { background: rgba(255,255,255,.14); border-bottom-color: #fff; }
+  .nav a[href="#soundcloud"].active { background: var(--c1); border-bottom-color: var(--c1); }
+  .nav a[href="#instagram"].active  { background: var(--c2); border-bottom-color: var(--c2); }
+  .nav a[href="#releases"].active   { background: var(--c3); border-bottom-color: var(--c3); }
+  .nav a[href="#content"].active    { background: var(--c4); border-bottom-color: var(--c4); }
+  .nav a[href="#budget"].active     { background: var(--c5); border-bottom-color: var(--c5); }
+
+  /* ═══════════════════════════
+     SECTION WRAPPER
+  ═══════════════════════════ */
+  .section {
+    background: var(--white);
+    border-bottom: 4px solid var(--ink);
+    position: relative;
+  }
+  .anchor { display: block; height: 0; overflow: hidden; position: relative; top: -52px; }
+
+  /* ═══════════════════════════
+     BANNER (Paradiso)
+  ═══════════════════════════ */
+  .banner {
+    display: grid; grid-template-columns: 1fr auto;
+    align-items: flex-end;
+    padding: 22px 52px 0;
+    min-height: 96px;
+    position: relative; overflow: hidden;
+  }
+  .banner-bg { position: absolute; inset: 0; }
+  .banner-title {
+    position: relative; z-index: 2;
+    font-size: clamp(44px, 7vw, 84px);
+    font-weight: 900; letter-spacing: -3px;
+    line-height: .88; text-transform: uppercase;
+    color: #fff; padding-bottom: 10px;
+  }
+  .banner-meta {
+    position: relative; z-index: 2;
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    text-align: right; line-height: 1.9;
+    padding-bottom: 12px; padding-left: 16px; flex-shrink: 0;
+  }
+
+  .circle-strip {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 52px;
+    border-bottom: 1px solid var(--sep);
+  }
+  .cir { width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0; position: relative; overflow: hidden; }
+  .cir::after { content:''; position:absolute; right:0;top:0; width:50%;height:100%; background:rgba(255,255,255,.45); border-radius:0 50% 50% 0; }
+  .cir-empty { width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0; border: 2px solid var(--sep); }
+
+  .sec-body { padding: 0 52px 36px; }
+
+  /* ═══════════════════════════
+     ① OVERVIEW
+  ═══════════════════════════ */
+  .ov-hero {
+    background: var(--ink);
+    display: grid; grid-template-columns: 1fr 1fr;
+    min-height: 190px;
+  }
+  .ov-hero-left {
+    padding: 36px 0 28px 52px;
+    border-right: 1px solid rgba(255,255,255,.1);
+  }
+  .ov-hero-left h1 {
+    font-size: clamp(56px, 9vw, 120px);
+    font-weight: 900; letter-spacing: -5px;
+    line-height: .83; text-transform: uppercase;
+    color: var(--paper);
+  }
+  .ov-hero-left p {
+    margin-top: 12px;
+    font-size: 0.68rem; font-weight: 700;
+    letter-spacing: .2em; text-transform: uppercase;
+    color: rgba(255,255,255,.28);
+  }
+  .ov-hero-right { display: grid; grid-template-columns: 1fr 1fr; }
+  .ov-kpi {
+    padding: 22px 26px;
+    border-right: 1px solid rgba(255,255,255,.08);
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .ov-kpi:nth-child(2n) { border-right: none; }
+  .ov-kpi:nth-child(3),.ov-kpi:nth-child(4) { border-bottom: none; }
+  .kpi-dot { width: 9px; height: 9px; border-radius: 50%; margin-bottom: 10px; }
+  .kpi-val { font-size: clamp(22px, 2.8vw, 38px); font-weight: 900; letter-spacing: -1px; color: #fff; line-height: 1; }
+  .kpi-lbl { font-size: 0.6rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.3); margin-top: 4px; }
+
+  .alert-bar {
+    background: rgba(90,142,184,.1);
+    border-left: 4px solid var(--c3);
+    padding: 11px 52px;
+    font-size: .8rem; font-weight: 600; color: var(--c3);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .alert-bar strong { font-weight: 900; }
+
+  .ov-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; border-bottom: 1px solid var(--sep); }
+  .ov-col { padding: 26px 26px; border-right: 1px solid var(--sep); }
+  .ov-col:last-child { border-right: none; }
+  .ov-col-title {
+    font-size: 0.62rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--faint); margin-bottom: 16px;
+    display: flex; align-items: center; gap: 7px;
+  }
+  .ov-col-title .cdot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+  .rel-card { background: var(--paper); border-radius: 5px; padding: 13px 15px; margin-bottom: 8px; }
+  .rel-card.next { background: rgba(90,142,184,.08); border-left: 3px solid var(--c3); }
+  .rel-card.done { opacity: .38; }
+  .rel-date { font-size: .62rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); margin-bottom: 3px; }
+  .rel-card.next .rel-date { color: var(--c3); }
+  .rel-title { font-size: .92rem; font-weight: 700; line-height: 1.2; margin-bottom: 6px; }
+  .rel-plt { display: flex; gap: 4px; flex-wrap: wrap; }
+
+  .post-item { display: flex; gap: 11px; padding: 9px 0; border-bottom: 1px solid var(--sep); }
+  .post-item:last-child { border-bottom: none; }
+  .post-circ { width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0; position: relative; overflow: hidden; }
+  .post-circ::after { content:''; position:absolute; right:0;top:0; width:50%;height:100%; background:rgba(255,255,255,.5); border-radius:0 50% 50% 0; }
+  .post-date  { font-size: .6rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); margin-bottom: 2px; }
+  .post-title { font-size: .86rem; font-weight: 700; line-height: 1.2; }
+  .post-boost { font-size: .6rem; font-weight: 700; color: var(--c1); margin-top: 2px; }
+
+  .plat-row { display: flex; gap: 10px; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--sep); }
+  .plat-row:last-child { border-bottom: none; }
+  .plat-icon { width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: .62rem; font-weight: 900; color: #fff; }
+  .plat-name { font-size: .8rem; font-weight: 700; line-height: 1; }
+  .plat-sub  { font-size: .65rem; color: var(--mid); margin-top: 2px; }
+  .plat-stat { margin-left: auto; text-align: right; }
+  .plat-val  { font-size: 1rem; font-weight: 900; line-height: 1; }
+  .plat-lbl  { font-size: .58rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); }
+
+  /* ═══════════════════════════
+     STATS ROW
+  ═══════════════════════════ */
+  .stats-row { display: grid; grid-template-columns: repeat(5, 1fr); border-bottom: 1px solid var(--sep); }
+  .stat-cell { padding: 18px 16px; border-right: 1px solid var(--sep); }
+  .stat-cell:last-child { border-right: none; }
+  .stat-val { font-size: clamp(20px, 2.3vw, 32px); font-weight: 900; letter-spacing: -.8px; line-height: 1; margin-bottom: 4px; }
+  .stat-lbl { font-size: 0.62rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); }
+
+  /* compare stat rows (tracks vs sets) */
+  .compare-row { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--sep); }
+  .compare-col { padding: 18px 24px; border-right: 1px solid var(--sep); }
+  .compare-col:last-child { border-right: none; }
+  .compare-label {
+    font-size: .62rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
+    margin-bottom: 14px; display: flex; align-items: center; gap: 7px;
+  }
+  .compare-label .badge-type { padding: 2px 9px; border-radius: 3px; font-size: .6rem; font-weight: 700; }
+  .compare-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
+  .cs { padding: 0 12px 0 0; }
+  .cs-val { font-size: clamp(18px, 2vw, 26px); font-weight: 900; letter-spacing: -.5px; line-height: 1; margin-bottom: 3px; }
+  .cs-lbl { font-size: .58rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); }
+
+  /* ═══════════════════════════
+     CHARTS
+  ═══════════════════════════ */
+  .charts-row { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--sep); }
+  .chart-cell { padding: 18px 20px 14px; border-right: 1px solid var(--sep); }
+  .chart-cell:last-child { border-right: none; }
+  .chart-lbl { font-size: .62rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--faint); margin-bottom: 12px; }
+  canvas { max-height: 165px; }
+
+  /* ═══════════════════════════
+     CHRONOLOGICAL TIMELINE
+  ═══════════════════════════ */
+  .chron-list { border-bottom: 1px solid var(--sep); }
+  .chron-item {
+    display: grid; grid-template-columns: 36px 1fr auto;
+    align-items: start; gap: 14px;
+    padding: 14px 52px;
+    border-bottom: 1px solid var(--sep);
+    transition: background .12s;
+  }
+  .chron-item:last-child { border-bottom: none; }
+  .chron-item:hover { background: var(--paper); }
+  .chron-item.upcoming { opacity: .55; background: repeating-linear-gradient(135deg, transparent, transparent 8px, rgba(0,0,0,.015) 8px, rgba(0,0,0,.015) 16px); }
+  .chron-item.upcoming:hover { background: rgba(90,142,184,.04); opacity: .8; }
+
+  .chron-num {
+    font-size: .68rem; font-weight: 700; letter-spacing: .06em;
+    color: var(--faint); padding-top: 3px; text-align: right;
+  }
+  .chron-main {}
+  .chron-title { font-size: .95rem; font-weight: 700; line-height: 1.25; margin-bottom: 4px; }
+  .chron-sub { font-size: .75rem; color: var(--mid); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .chron-date { font-size: .62rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); }
+  .chron-stats {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 4px;
+    flex-shrink: 0; min-width: 80px;
+  }
+  .chron-stat-row { display: flex; gap: 14px; }
+  .cs-item { text-align: right; }
+  .cs-item .v { font-size: .9rem; font-weight: 700; line-height: 1; }
+  .cs-item .l { font-size: .55rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); }
+
+  /* TYPE + UPCOMING BADGES */
+  .tbadge {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 2px 9px;
+    font-size: .58rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase;
+    border-radius: 3px;
+  }
+  .tbadge-track    { background: rgba(224,122,82,.13); color: var(--c1); }
+  .tbadge-set      { background: rgba(90,142,184,.13); color: var(--c3); }
+  .tbadge-reel     { background: rgba(90,142,184,.13); color: var(--c3); }
+  .tbadge-bild     { background: rgba(192,106,138,.13); color: var(--c2); }
+  .tbadge-carousel { background: rgba(224,122,82,.13);  color: var(--c1); }
+  .tbadge-story    { background: rgba(192,106,138,.13); color: var(--c2); }
+  .tbadge-video    { background: rgba(192,106,138,.13); color: var(--c2); }
+  .tbadge-upcoming { background: rgba(90,142,184,.12);  color: var(--c3); border: 1px dashed var(--c3); }
+
+  /* IG timeline engagement bar */
+  .eng-bar { height: 3px; border-radius: 2px; background: var(--sep); margin-top: 6px; width: 80px; }
+  .eng-fill { height: 100%; border-radius: 2px; }
+
+  /* ═══════════════════════════
+     RELEASES TIMELINE
+  ═══════════════════════════ */
+  .tl-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-bottom: 1px solid var(--sep); }
+  .tl-col  { padding: 20px 22px 24px; border-right: 1px solid var(--sep); }
+  .tl-col:last-child { border-right: none; }
+  .tl-col.tl-done   { opacity: .35; }
+  .tl-col.tl-active { background: rgba(90,142,184,.06); }
+  .tl-circ { width: 38px; height: 38px; border-radius: 50%; margin-bottom: 11px; position: relative; overflow: hidden; }
+  .tl-circ::after { content:''; position:absolute; right:0;top:0; width:50%;height:100%; background:rgba(255,255,255,.5); border-radius:0 50% 50% 0; }
+  .tl-col.tl-done   .tl-circ { background: var(--sep); }
+  .tl-col.tl-active .tl-circ { background: var(--c3); }
+  .tl-col:not(.tl-done):not(.tl-active) .tl-circ { background: var(--paper); border: 2px solid var(--sep); }
+  .tl-date  { font-size: .64rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); margin-bottom: 4px; }
+  .tl-col.tl-active .tl-date { color: var(--c3); }
+  .tl-title { font-size: .98rem; font-weight: 900; line-height: 1.2; margin-bottom: 5px; }
+  .tl-sub   { font-size: .76rem; color: var(--mid); line-height: 1.4; margin-bottom: 10px; }
+  .tl-tags  { display: flex; flex-wrap: wrap; gap: 4px; }
+  .plt {
+    display: inline-block; padding: 2px 8px;
+    font-size: .58rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; border-radius: 3px;
+  }
+  .plt-sc  { background: rgba(224,122,82,.13); color: var(--c1); }
+  .plt-sp  { background: rgba(78,158,122,.13); color: var(--c4); }
+  .plt-all { background: rgba(90,142,184,.13); color: var(--c3); }
+  .tl-boost { display:inline-block; padding:2px 8px; font-size:.58rem; font-weight:700; letter-spacing:.09em; text-transform:uppercase; border-radius:3px; background:rgba(138,110,184,.13); color:var(--c5); }
+
+  /* ═══════════════════════════
+     CONTENT PLAN
+  ═══════════════════════════ */
+  .cp-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
+  .cp-card { padding: 16px 18px 18px; border-right: 1px solid var(--sep); border-bottom: 1px solid var(--sep); }
+  .cp-card:nth-child(3n) { border-right: none; }
+  .cp-circ { width: 24px; height: 24px; border-radius: 50%; margin-bottom: 8px; position: relative; overflow: hidden; }
+  .cp-circ::after { content:''; position:absolute; right:0;top:0; width:50%;height:100%; background:rgba(255,255,255,.5); border-radius:0 50% 50% 0; }
+  .cp-card.boost { background: rgba(224,122,82,.04); }
+  .cp-card.boost .cp-circ { background: var(--c1); }
+  .cp-card:not(.boost) .cp-circ { background: var(--c4); opacity:.55; }
+  .cp-dr   { display:flex; justify-content:space-between; align-items:center; margin-bottom: 4px; }
+  .cp-date { font-size: .6rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); }
+  .cp-bt   { font-size: .6rem; font-weight: 900; color: var(--c1); }
+  .cp-title   { font-size: .88rem; font-weight: 700; margin-bottom: 3px; line-height: 1.25; }
+  .cp-caption { font-size: .74rem; color: var(--mid); font-style: italic; margin-bottom: 9px; line-height: 1.35; }
+  .cp-tags    { display: flex; gap: 4px; flex-wrap: wrap; }
+  .fmt {
+    display: inline-block; padding: 2px 8px;
+    font-size: .57rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; border-radius: 3px;
+  }
+  .fmt-reel     { background: rgba(90,142,184,.12);  color: var(--c3); }
+  .fmt-carousel { background: rgba(224,122,82,.12);  color: var(--c1); }
+  .fmt-post     { background: rgba(78,158,122,.12);  color: var(--c4); }
+  .fmt-story    { background: rgba(192,106,138,.12); color: var(--c2); }
+  .pill { display:inline-block; padding:2px 8px; font-size:.57rem; font-weight:600; letter-spacing:.09em; text-transform:uppercase; border-radius:3px; background:rgba(0,0,0,.05); color:var(--faint); }
+
+  /* ═══════════════════════════
+     BUDGET
+  ═══════════════════════════ */
+  .bud-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
+  .bud-cell { padding: 22px 20px; border-right: 1px solid var(--sep); border-bottom: 1px solid var(--sep); }
+  .bud-cell:nth-child(3n) { border-right: none; }
+  .bud-circ { width: 28px; height: 28px; border-radius: 50%; background: var(--c5); margin-bottom: 9px; position: relative; overflow: hidden; }
+  .bud-circ::after { content:''; position:absolute; right:0;top:0; width:50%;height:100%; background:rgba(255,255,255,.45); border-radius:0 50% 50% 0; }
+  .bud-cell.total { background: var(--ink); border-color: var(--ink); }
+  .bud-cell.total .bud-circ { background: rgba(255,255,255,.15); }
+  .bud-val { font-size: clamp(20px, 2.6vw, 36px); font-weight: 900; letter-spacing: -1px; color: var(--c5); margin-bottom: 4px; line-height: 1; }
+  .bud-cell.total .bud-val { color: #fff; }
+  .bud-lbl { font-size: .62rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; color: var(--faint); }
+  .bud-cell.total .bud-lbl { color: rgba(255,255,255,.35); }
+
+  /* ═══════════════════════════
+     FOOTER
+  ═══════════════════════════ */
+  .footer {
+    background: var(--ink); padding: 16px 52px;
+    display: flex; justify-content: space-between;
+    font-size: .62rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
+    color: rgba(255,255,255,.2);
+  }
+
+  /* ── TABLET (≤ 900px) ── */
+  @media (max-width: 900px) {
+    .banner, .sec-body, .circle-strip, .alert-bar, .footer { padding-left: 20px; padding-right: 20px; }
+    .chron-item { padding-left: 20px; padding-right: 20px; }
+    .banner { padding-top: 16px; min-height: 80px; }
+
+    .nav-brand { display: none; }
+    .nav a { padding: 0 16px; font-size: .65rem; }
+
+    .ov-hero { grid-template-columns: 1fr; }
+    .ov-hero-right { display: none; }
+    .ov-hero-left { padding: 28px 0 20px 20px; }
+    .ov-grid { grid-template-columns: 1fr; }
+    .ov-col { border-right: none; border-bottom: 1px solid var(--sep); }
+    .ov-col:last-child { border-bottom: none; }
+
+    .stats-row { grid-template-columns: repeat(3, 1fr); }
+    .compare-row { grid-template-columns: 1fr; }
+    .compare-col { border-right: none; border-bottom: 1px solid var(--sep); }
+    .compare-col:last-child { border-bottom: none; }
+    .charts-row { grid-template-columns: 1fr; }
+    .chart-cell { border-right: none; border-bottom: 1px solid var(--sep); }
+    .chart-cell:last-child { border-bottom: none; }
+    .tl-grid { grid-template-columns: 1fr 1fr; }
+    .cp-grid { grid-template-columns: 1fr 1fr; }
+    .cp-card:nth-child(2n) { border-right: none; }
+    .cp-card:nth-child(3n) { border-right: 1px solid var(--sep); }
+    .bud-grid { grid-template-columns: 1fr 1fr; }
+    .bud-cell:nth-child(2n) { border-right: none; }
+    .bud-cell:nth-child(3n) { border-right: 1px solid var(--sep); }
+
+    .chron-item { grid-template-columns: 28px 1fr auto; gap: 10px; }
+    .chron-stats { min-width: 60px; }
+    .chron-stat-row { gap: 8px; }
+  }
+
+  /* ── SMARTPHONE (≤ 480px) ── */
+  @media (max-width: 480px) {
+    body { font-size: 14px; }
+
+    /* Nav: scrollable, full width, large tap targets */
+    .nav { border-bottom: 2px solid var(--ink); }
+    .nav a {
+      padding: 0 13px;
+      height: 52px;
+      font-size: .6rem;
+      letter-spacing: .1em;
+    }
+    .nav a .dot { width: 7px; height: 7px; }
+
+    /* Hero */
+    .ov-hero-left h1 { font-size: clamp(48px, 16vw, 72px); letter-spacing: -3px; }
+    .ov-hero-left p  { font-size: .6rem; }
+
+    /* Alert */
+    .alert-bar { font-size: .74rem; padding: 10px 16px; }
+
+    /* Banner */
+    .banner { padding: 14px 16px 0; min-height: 72px; }
+    .banner-title { font-size: clamp(38px, 12vw, 56px); letter-spacing: -2px; }
+    .banner-meta  { font-size: .58rem; line-height: 1.7; }
+    .circle-strip { padding: 10px 16px; gap: 8px; }
+    .cir, .cir-empty { width: 22px; height: 22px; }
+
+    /* Stats: 2 columns */
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .stat-cell:nth-child(2n) { border-right: none; }
+    .stat-cell:nth-child(2) { border-right: none; }
+    .stat-val { font-size: clamp(18px, 6vw, 26px); }
+
+    /* Compare stats: 2 cols */
+    .compare-stats { grid-template-columns: 1fr 1fr; gap: 10px 0; }
+    .cs-val { font-size: clamp(16px, 5vw, 22px); }
+
+    /* Charts: smaller */
+    canvas { max-height: 140px; }
+    .chart-cell { padding: 14px 14px 10px; }
+
+    /* Chron items */
+    .chron-item { grid-template-columns: 24px 1fr; padding: 12px 16px; gap: 8px; }
+    .chron-stats { display: none; }
+    .chron-title { font-size: .9rem; }
+    .chron-sub   { font-size: .68rem; gap: 5px; }
+    .tbadge      { font-size: .54rem; padding: 2px 6px; }
+    .eng-bar     { width: 60px; }
+
+    /* Timeline: single column */
+    .tl-grid { grid-template-columns: 1fr; }
+    .tl-col  { border-right: none; border-bottom: 1px solid var(--sep); }
+    .tl-col:last-child { border-bottom: none; }
+
+    /* Content plan: single column */
+    .cp-grid { grid-template-columns: 1fr; }
+    .cp-card { border-right: none; }
+    .cp-card:nth-child(3n) { border-right: none; }
+
+    /* Budget: single column */
+    .bud-grid { grid-template-columns: 1fr; }
+    .bud-cell { border-right: none; }
+    .bud-cell:nth-child(3n) { border-right: none; }
+
+    /* Overview 3-col → 1-col */
+    .ov-grid { grid-template-columns: 1fr; }
+
+    /* Releases */
+    .rel-card { padding: 10px 12px; }
+    .rel-title { font-size: .86rem; }
+
+    /* Posts */
+    .post-item { gap: 8px; padding: 8px 0; }
+    .post-title { font-size: .82rem; }
+
+    /* Plat rows */
+    .plat-name { font-size: .76rem; }
+    .plat-val  { font-size: .9rem; }
+
+    /* Sec body padding */
+    .sec-body { padding: 0 16px 28px; }
+    .chron-item { padding-left: 16px; padding-right: 16px; }
+    .footer { padding: 14px 16px; flex-direction: column; gap: 4px; text-align: center; }
+
+    /* Section header label */
+    div[style*="padding: 14px 52px"] { padding-left: 16px !important; padding-right: 16px !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ STICKY NAV ══ -->
+<nav class="nav" id="mainNav">
+  <div class="nav-brand">Clapsparrow</div>
+  <a href="#overview"   class="active"><span class="dot"></span>Übersicht</a>
+  <a href="#soundcloud"><span class="dot"></span>SoundCloud</a>
+  <a href="#instagram"><span class="dot"></span>Instagram</a>
+  <a href="#releases"><span class="dot"></span>Releases</a>
+  <a href="#content"><span class="dot"></span>Content Plan</a>
+  <a href="#budget"><span class="dot"></span>Budget</a>
+</nav>
+
+
+<!-- ═══════════════════════════════════════════
+     ① ÜBERSICHT
+═══════════════════════════════════════════ -->
+<div class="section">
+  <a class="anchor" id="overview"></a>
+
+  <div class="ov-hero">
+    <div class="ov-hero-left">
+      <h1>Claps&shy;sparrow</h1>
+      <p>Social Media Dashboard &nbsp;·&nbsp; 06.04.2026</p>
+    </div>
+    <div class="ov-hero-right">
+      <div class="ov-kpi">
+        <div class="kpi-dot" style="background:var(--c1)"></div>
+        <div><div class="kpi-val">4.2K</div><div class="kpi-lbl">SC Plays gesamt</div></div>
+      </div>
+      <div class="ov-kpi">
+        <div class="kpi-dot" style="background:var(--c2)"></div>
+        <div><div class="kpi-val">14.81%</div><div class="kpi-lbl">IG Engagement</div></div>
+      </div>
+      <div class="ov-kpi">
+        <div class="kpi-dot" style="background:var(--c3)"></div>
+        <div><div class="kpi-val">18 Tage</div><div class="kpi-lbl">Bis EP-Release</div></div>
+      </div>
+      <div class="ov-kpi">
+        <div class="kpi-dot" style="background:var(--c5)"></div>
+        <div><div class="kpi-val">75€</div><div class="kpi-lbl">Budget geplant</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert-bar">
+    <span>●</span>
+    <span><strong>Nächste Aktion:</strong> Track 3 Drop — Fr 10.04 · 18:00 &nbsp;·&nbsp; Boost 25€ aktivieren &nbsp;·&nbsp; EP Editorial Pitch läuft bis 17.04.</span>
+  </div>
+
+  <div class="ov-grid">
+
+    <div class="ov-col">
+      <div class="ov-col-title"><span class="cdot" style="background:var(--ink)"></span>Plattformen</div>
+      <div class="plat-row">
+        <div class="plat-icon" style="background:var(--c1)">SC</div>
+        <div><div class="plat-name">SoundCloud</div><div class="plat-sub">232 Followers · 20 Tracks</div></div>
+        <div class="plat-stat"><div class="plat-val" style="color:var(--c1)">4.2K</div><div class="plat-lbl">Plays gesamt</div></div>
+      </div>
+      <div class="plat-row">
+        <div class="plat-icon" style="background:var(--c2)">IG</div>
+        <div><div class="plat-name">Instagram</div><div class="plat-sub">530 Followers · 49 Posts</div></div>
+        <div class="plat-stat"><div class="plat-val" style="color:var(--c2)">14.81%</div><div class="plat-lbl">Engagement</div></div>
+      </div>
+      <div class="plat-row">
+        <div class="plat-icon" style="background:#1DB954">SP</div>
+        <div><div class="plat-name">Spotify</div><div class="plat-sub">6 Monthly Listeners</div></div>
+        <div class="plat-stat"><div class="plat-val" style="color:#d44">!</div><div class="plat-lbl">Bio fehlt</div></div>
+      </div>
+      <div class="plat-row">
+        <div class="plat-icon" style="background:#FF0000">YT</div>
+        <div><div class="plat-name">YouTube</div><div class="plat-sub">@clapsparrow5268 · URVB Set</div></div>
+        <div class="plat-stat"><div class="plat-val" style="color:var(--mid)">219</div><div class="plat-lbl">Views</div></div>
+      </div>
+    </div>
+
+    <div class="ov-col">
+      <div class="ov-col-title"><span class="cdot" style="background:var(--c3)"></span>Nächste Releases</div>
+      <div class="rel-card done">
+        <div class="rel-date">10.04.2026</div>
+        <div class="rel-title">I Wanna Feel It — Track 3</div>
+        <div class="rel-plt"><span class="plt plt-sc">SoundCloud</span></div>
+      </div>
+      <div class="rel-card next">
+        <div class="rel-date">24.04.2026 — Nächster</div>
+        <div class="rel-title">I Wanna Feel It EP</div>
+        <div class="rel-plt"><span class="plt plt-sp">Spotify</span><span class="plt plt-all">Alle Plattformen</span></div>
+      </div>
+      <div class="rel-card">
+        <div class="rel-date">01.05.2026</div>
+        <div class="rel-title">Prince — 17 Days (UKG Edit)</div>
+        <div class="rel-plt"><span class="plt plt-sc">SoundCloud only</span></div>
+      </div>
+      <div class="rel-card">
+        <div class="rel-date">06.06.2026</div>
+        <div class="rel-title">No Turning Back</div>
+        <div class="rel-plt"><span class="plt plt-sp">Spotify</span><span class="plt plt-all">Alle Plattformen</span></div>
+      </div>
+    </div>
+
+    <div class="ov-col">
+      <div class="ov-col-title"><span class="cdot" style="background:var(--c4)"></span>Nächste Posts</div>
+      <div class="post-item">
+        <div class="post-circ" style="background:var(--c1)"></div>
+        <div>
+          <div class="post-date">Fr 10.04 · 18:00</div>
+          <div class="post-title">I Wanna Feel It — Track 3 Out Now</div>
+          <div class="post-boost">↑ Boost 25€</div>
+        </div>
+      </div>
+      <div class="post-item">
+        <div class="post-circ" style="background:var(--c4)"></div>
+        <div><div class="post-date">Sa 11.04 · 20:00</div><div class="post-title">EP Reaktion Poll</div></div>
+      </div>
+      <div class="post-item">
+        <div class="post-circ" style="background:var(--c4)"></div>
+        <div><div class="post-date">Di 15.04 · 19:00</div><div class="post-title">Was ist UK Garage?</div></div>
+      </div>
+      <div class="post-item">
+        <div class="post-circ" style="background:var(--c4)"></div>
+        <div><div class="post-date">Do 17.04 · 18:00</div><div class="post-title">Spotify EP Teaser</div></div>
+      </div>
+      <div class="post-item">
+        <div class="post-circ" style="background:var(--c1)"></div>
+        <div>
+          <div class="post-date">Do 24.04 · 18:00</div>
+          <div class="post-title">I Wanna Feel It EP — Spotify Launch</div>
+          <div class="post-boost">↑ Boost 10€</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     ② SOUNDCLOUD
+═══════════════════════════════════════════ -->
+<div class="section">
+  <a class="anchor" id="soundcloud"></a>
+  <div class="banner">
+    <div class="banner-bg" style="background:var(--c1)"></div>
+    <div class="banner-title">Sound&shy;Cloud</div>
+    <div class="banner-meta">20 Tracks · 232 Followers<br>3 Tracks · 2 Sets veröffentlicht<br>Stand 06.04.2026</div>
+  </div>
+  <div class="circle-strip">
+    <div class="cir" style="background:var(--c1)"></div>
+    <div class="cir" style="background:var(--c1);opacity:.5"></div>
+    <div class="cir-empty"></div>
+    <div class="cir" style="background:var(--c1);opacity:.3"></div>
+    <div class="cir" style="background:var(--c1)"></div>
+    <div class="cir-empty"></div>
+    <div class="cir" style="background:var(--c1);opacity:.5"></div>
+  </div>
+
+  <!-- Tracks vs Sets Vergleich -->
+  <div class="compare-row">
+    <div class="compare-col">
+      <div class="compare-label">
+        <span class="badge-type tbadge tbadge-track">Track</span>
+        3 veröffentlichte Tracks
+      </div>
+      <div class="compare-stats">
+        <div class="cs"><div class="cs-val" style="color:var(--c1)">3.4K</div><div class="cs-lbl">Plays gesamt</div></div>
+        <div class="cs"><div class="cs-val" style="color:var(--c1)">1147</div><div class="cs-lbl">Ø Plays</div></div>
+        <div class="cs"><div class="cs-val" style="color:var(--c1)">96</div><div class="cs-lbl">Likes gesamt</div></div>
+        <div class="cs"><div class="cs-val" style="color:var(--c1)">32</div><div class="cs-lbl">Ø Likes</div></div>
+      </div>
+    </div>
+    <div class="compare-col">
+      <div class="compare-label">
+        <span class="badge-type tbadge tbadge-set">Set</span>
+        4 veröffentlichte Sets
+      </div>
+      <div class="compare-stats">
+        <div class="cs"><div class="cs-val" style="color:var(--c3)">771</div><div class="cs-lbl">Plays gesamt</div></div>
+        <div class="cs"><div class="cs-val" style="color:var(--c3)">386</div><div class="cs-lbl">Ø Plays</div></div>
+        <div class="cs"><div class="cs-val" style="color:var(--c3)">39</div><div class="cs-lbl">Likes gesamt</div></div>
+        <div class="cs"><div class="cs-val" style="color:var(--c3)">20</div><div class="cs-lbl">Ø Likes</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div class="charts-row">
+    <div class="chart-cell"><div class="chart-lbl">Tracks — Plays Verlauf</div><canvas id="scTracksChart"></canvas></div>
+    <div class="chart-cell"><div class="chart-lbl">Sets — Plays Verlauf</div><canvas id="scSetsChart"></canvas></div>
+  </div>
+
+  <!-- Chronologische Timeline -->
+  <div style="padding: 14px 52px 8px; font-size:.62rem; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--faint); border-bottom:1px solid var(--sep);">Chronologisch — neueste zuerst</div>
+  <div class="chron-list">
+
+    <!-- UPCOMING -->
+    <div class="chron-item upcoming">
+      <div class="chron-num">—</div>
+      <div class="chron-main">
+        <div class="chron-title">Muffins Trance Edit</div>
+        <div class="chron-sub">
+          <span class="tbadge tbadge-track">Track</span>
+          <span class="tbadge tbadge-upcoming">Upcoming</span>
+          <span class="chron-date">23.05.2026 · Free Download</span>
+        </div>
+      </div>
+      <div class="chron-stats"><div class="chron-date" style="font-size:.65rem;margin-top:3px">in 47 Tagen</div></div>
+    </div>
+
+    <div class="chron-item upcoming">
+      <div class="chron-num">—</div>
+      <div class="chron-main">
+        <div class="chron-title">Prince — 17 Days (UKG Edit)</div>
+        <div class="chron-sub">
+          <span class="tbadge tbadge-track">Track</span>
+          <span class="tbadge tbadge-upcoming">Upcoming</span>
+          <span class="chron-date">01.05.2026 · Free Download</span>
+        </div>
+      </div>
+      <div class="chron-stats"><div class="chron-date" style="font-size:.65rem;margin-top:3px">in 25 Tagen</div></div>
+    </div>
+
+    <div class="chron-item upcoming">
+      <div class="chron-num">—</div>
+      <div class="chron-main">
+        <div class="chron-title">I Wanna Feel It — Track 3</div>
+        <div class="chron-sub">
+          <span class="tbadge tbadge-track">Track</span>
+          <span class="tbadge tbadge-upcoming">Upcoming</span>
+          <span class="chron-date">10.04.2026 · SoundCloud Drop</span>
+        </div>
+      </div>
+      <div class="chron-stats"><div class="chron-date" style="font-size:.65rem;margin-top:3px">in 4 Tagen</div></div>
+    </div>
+
+    <!-- VERÖFFENTLICHT -->
+    <div class="chron-item">
+      <div class="chron-num">01</div>
+      <div class="chron-main">
+        <div class="chron-title">Clapsparrow @ URVB — 13.03.26 // Vinyl Only</div>
+        <div class="chron-sub">
+          <span class="tbadge tbadge-set">Set</span>
+          <span class="chron-date">17.03.2026</span>
+        </div>
+      </div>
+      <div class="chron-stats">
+        <div class="chron-stat-row">
+          <div class="cs-item"><div class="v" style="color:var(--c3)">48</div><div class="l">Plays</div></div>
+          <div class="cs-item"><div class="v">6</div><div class="l">Likes</div></div>
+          <div class="cs-item"><div class="v">1</div><div class="l">Rep.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chron-item">
+      <div class="chron-num">02</div>
+      <div class="chron-main">
+        <div class="chron-title">Never Let Me Go</div>
+        <div class="chron-sub">
+          <span class="tbadge tbadge-track">Track</span>
+          <span class="chron-date">24.02.2026</span>
+        </div>
+      </div>
+      <div class="chron-stats">
+        <div class="chron-stat-row">
+          <div class="cs-item"><div class="v" style="color:var(--c1)">226</div><div class="l">Plays</div></div>
+          <div class="cs-item"><div class="v">11</div><div class="l">Likes</div></div>
+          <div class="cs-item"><div class="v">4</div><div class="l">Rep.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chron-item">
+      <div class="chron-num">03</div>
+      <div class="chron-main">
+        <div class="chron-title">Take My Time</div>
+        <div class="chron-sub">
+          <span class="tbadge tbadge-track">Track</span>
+          <span class="chron-date">08.02.2026</span>
+        </div>
+      </div>
+      <div class="chron-stats">
+        <div class="chron-stat-row">
+          <div class="cs-item"><div class="v" style="color:var(--c1)">289</div><div class="l">Plays</div></div>
+          <div class="cs-item"><div class="v">25</div><div class="l">Likes</div></div>
+          <div class="cs-item"><div class="v">14</div><div class="l">Rep.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chron-item">
+      <div class="chron-num">04</div>
+      <div class="chron-main">
+        <div class="chron-title">Kick Back [Free DL]</div>
+        <div class="chron-sub">
+          <span class="tbadge tbadge-track">Track</span>
+          <span class="chron-date">19.11.2025</span>
+          <span style="font-size:.72rem;color:var(--c1);font-weight:700">★ Top Track</span>
+        </div>
+      </div>
+      <div class="chron-stats">
+        <div class="chron-stat-row">
+          <div class="cs-item"><div class="v" style="color:var(--c1)">2.9K</div><div class="l">Plays</div></div>
+          <div class="cs-item"><div class="v">60</div><div class="l">Likes</div></div>
+          <div class="cs-item"><div class="v">6</div><div class="l">Rep.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chron-item">
+      <div class="chron-num">05</div>
+      <div class="chron-main">
+        <div class="chron-title">Botanical Beats — Bass Und Blüten @ Schlegel Kultur Club</div>
+        <div class="chron-sub">
+          <span class="tbadge tbadge-set">Set</span>
+          <span class="chron-date">06.11.2024</span>
+          <span style="font-size:.72rem;color:var(--c3);font-weight:700">★ Top Set</span>
+        </div>
+      </div>
+      <div class="chron-stats">
+        <div class="chron-stat-row">
+          <div class="cs-item"><div class="v" style="color:var(--c3)">723</div><div class="l">Plays</div></div>
+          <div class="cs-item"><div class="v">33</div><div class="l">Likes</div></div>
+          <div class="cs-item"><div class="v">1</div><div class="l">Rep.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chron-item">
+      <div class="chron-num">06</div>
+      <div class="chron-main">
+        <div class="chron-title">Clapsparrow @ Pavoia Festival</div>
+        <div class="chron-sub">
+          <span class="tbadge tbadge-set">Set</span>
+          <span class="chron-date">2024</span>
+        </div>
+      </div>
+      <div class="chron-stats">
+        <div class="chron-stat-row">
+          <div class="cs-item"><div class="v" style="color:var(--c3)">—</div><div class="l">Plays</div></div>
+          <div class="cs-item"><div class="v">—</div><div class="l">Likes</div></div>
+          <div class="cs-item"><div class="v">—</div><div class="l">Rep.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chron-item">
+      <div class="chron-num">07</div>
+      <div class="chron-main">
+        <div class="chron-title">Wohnzimmer Rave</div>
+        <div class="chron-sub">
+          <span class="tbadge tbadge-set">Set</span>
+          <span class="chron-date">2024</span>
+        </div>
+      </div>
+      <div class="chron-stats">
+        <div class="chron-stat-row">
+          <div class="cs-item"><div class="v" style="color:var(--c3)">—</div><div class="l">Plays</div></div>
+          <div class="cs-item"><div class="v">—</div><div class="l">Likes</div></div>
+          <div class="cs-item"><div class="v">—</div><div class="l">Rep.</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     ③ INSTAGRAM
+═══════════════════════════════════════════ -->
+<div class="section">
+  <a class="anchor" id="instagram"></a>
+  <div class="banner">
+    <div class="banner-bg" style="background:var(--c2)"></div>
+    <div class="banner-title">Instagram</div>
+    <div class="banner-meta">530 Followers · 49 Posts<br>14.81% Engagement Rate<br>Stand 06.04.2026</div>
+  </div>
+  <div class="circle-strip">
+    <div class="cir" style="background:var(--c2)"></div>
+    <div class="cir" style="background:var(--c2);opacity:.5"></div>
+    <div class="cir-empty"></div>
+    <div class="cir" style="background:var(--c2);opacity:.3"></div>
+    <div class="cir" style="background:var(--c2)"></div>
+    <div class="cir-empty"></div>
+    <div class="cir" style="background:var(--c2);opacity:.5"></div>
+  </div>
+
+  <!-- Gesamt-Stats -->
+  <div class="stats-row">
+    <div class="stat-cell"><div class="stat-val" style="color:var(--c2)">530</div><div class="stat-lbl">Followers</div></div>
+    <div class="stat-cell"><div class="stat-val" style="color:var(--c2)">49</div><div class="stat-lbl">Posts</div></div>
+    <div class="stat-cell"><div class="stat-val" style="color:var(--c2)">890</div><div class="stat-lbl">Likes (20 Posts)</div></div>
+    <div class="stat-cell"><div class="stat-val" style="color:var(--c2)">53</div><div class="stat-lbl">Kommentare (20)</div></div>
+    <div class="stat-cell"><div class="stat-val" style="color:var(--c2)">14.81%</div><div class="stat-lbl">Engagement</div></div>
+  </div>
+
+  <!-- Engagement Chart -->
+  <div class="charts-row">
+    <div class="chart-cell"><div class="chart-lbl">Likes — chronologisch</div><canvas id="igLikesChart"></canvas></div>
+    <div class="chart-cell"><div class="chart-lbl">Kommentare — chronologisch</div><canvas id="igCommsChart"></canvas></div>
+  </div>
+
+  <!-- Chronologische Timeline -->
+  <div style="padding: 14px 52px 8px; font-size:.62rem; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--faint); border-bottom:1px solid var(--sep);">Chronologisch — neueste zuerst &nbsp;·&nbsp; letzte 10 Posts + 2 geplante</div>
+  <div class="chron-list">
+
+    <!-- GEPLANT (upcoming) -->
+    <div class="chron-item upcoming">
+      <div class="chron-num">—</div>
+      <div class="chron-main">
+        <div class="chron-title">Countdown Track 3</div>
+        <div class="chron-sub">
+          <span class="tbadge tbadge-story">Story</span>
+          <span class="tbadge tbadge-upcoming">Geplant</span>
+          <span class="chron-date">Do 09.04 · 09:00</span>
+        </div>
+      </div>
+      <div class="chron-stats"><div class="chron-date" style="font-size:.65rem;margin-top:3px">morgen früh</div></div>
+    </div>
+
+    <div class="chron-item upcoming">
+      <div class="chron-num">—</div>
+      <div class="chron-main">
+        <div class="chron-title">Where Does Progressive House Come From</div>
+        <div class="chron-sub">
+          <span class="tbadge tbadge-carousel">Carousel</span>
+          <span class="tbadge tbadge-upcoming">Geplant</span>
+          <span class="chron-date">Di 08.04 · bereits gepostet?</span>
+        </div>
+      </div>
+      <div class="chron-stats"><div class="chron-date" style="font-size:.65rem;margin-top:3px;color:var(--c1)">↑ Boost 15€</div></div>
+    </div>
+
+    <!-- VERÖFFENTLICHT — neueste zuerst -->
+    <div class="chron-item">
+      <div class="chron-num">01</div>
+      <div class="chron-main">
+        <div class="chron-title">When we started to play our Set at URVB…</div>
+        <div class="chron-sub">
+          <span class="tbadge tbadge-reel">Video / Reel</span>
+          <span class="chron-date">31.03.2026</span>
+        </div>
+        <div class="eng-bar"><div class="eng-fill" style="width:47%;background:var(--c2)"></div></div>
+      </div>
+      <div class="chron-stats">
+        <div class="chron-stat-row">
+          <div class="cs-item"><div class="v" style="color:var(--c2)">84</div><div class="l">Likes</div></div>
+          <div class="cs-item"><div class="v">2</div><div class="l">Komm.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chron-item">
+      <div class="chron-num">02</div>
+      <div class="chron-main">
+        <div class="chron-title">Der erste Track unserer I Wanna Feel It EP ist raus…</div>
+        <div class="chron-sub">
+          <span class="tbadge tbadge-bild">Bild</span>
+          <span class="chron-date">27.03.2026</span>
+        </div>
+        <div class="eng-bar"><div class="eng-fill" style="width:31%;background:var(--c2)"></div></div>
+      </div>
+      <div class="chron-stats">
+        <div class="chron-stat-row">
+          <div class="cs-item"><div class="v" style="color:var(--c2)">47</div><div class="l">Likes</div></div>
+          <div class="cs-item"><div class="v">9</div><div class="l">Komm.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chron-item">
+      <div class="chron-num">03</div>
+      <div class="chron-main">
+        <div class="chron-title">Die nächsten Wochen werde ich einige meiner Projekte…</div>
+        <div class="chron-sub">
+          <span class="tbadge tbadge-video">Video</span>
+          <span class="chron-date">26.03.2026</span>
+        </div>
+        <div class="eng-bar"><div class="eng-fill" style="width:43%;background:var(--c2)"></div></div>
+      </div>
+      <div class="chron-stats">
+        <div class="chron-stat-row">
+          <div class="cs-item"><div class="v" style="color:var(--c2)">64</div><div class="l">Likes</div></div>
+          <div class="cs-item"><div class="v">12</div><div class="l">Komm.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chron-item">
+      <div class="chron-num">04</div>
+      <div class="chron-main">
+        <div class="chron-title">Unser Set vom Wochenende bei @uptownrecords.vinylbus ist jetzt online…</div>
+        <div class="chron-sub">
+          <span class="tbadge tbadge-bild">Bild</span>
+          <span class="chron-date">17.03.2026</span>
+        </div>
+        <div class="eng-bar"><div class="eng-fill" style="width:60%;background:var(--c2)"></div></div>
+      </div>
+      <div class="chron-stats">
+        <div class="chron-stat-row">
+          <div class="cs-item"><div class="v" style="color:var(--c2)">95</div><div class="l">Likes</div></div>
+          <div class="cs-item"><div class="v">11</div><div class="l">Komm.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chron-item">
+      <div class="chron-num">05</div>
+      <div class="chron-main">
+        <div class="chron-title">Am 14.03 dürfen wir ein Set bei @uptownrecords.vinylbus spielen…</div>
+        <div class="chron-sub">
+          <span class="tbadge tbadge-bild">Bild</span>
+          <span class="chron-date">28.02.2026</span>
+        </div>
+        <div class="eng-bar"><div class="eng-fill" style="width:66%;background:var(--c2)"></div></div>
+      </div>
+      <div class="chron-stats">
+        <div class="chron-stat-row">
+          <div class="cs-item"><div class="v" style="color:var(--c2)">106</div><div class="l">Likes</div></div>
+          <div class="cs-item"><div class="v">5</div><div class="l">Komm.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chron-item">
+      <div class="chron-num">06</div>
+      <div class="chron-main">
+        <div class="chron-title">Wir sind wieder fleißig dabei unsere Musik zu sortieren…</div>
+        <div class="chron-sub">
+          <span class="tbadge tbadge-video">Video</span>
+          <span class="chron-date">31.07.2025</span>
+        </div>
+        <div class="eng-bar"><div class="eng-fill" style="width:29%;background:var(--c2)"></div></div>
+      </div>
+      <div class="chron-stats">
+        <div class="chron-stat-row">
+          <div class="cs-item"><div class="v" style="color:var(--c2)">44</div><div class="l">Likes</div></div>
+          <div class="cs-item"><div class="v">4</div><div class="l">Komm.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chron-item">
+      <div class="chron-num">07</div>
+      <div class="chron-main">
+        <div class="chron-title">Nochmal ein kleiner Einblick in unser @wearepavoia Set ❣️</div>
+        <div class="chron-sub">
+          <span class="tbadge tbadge-bild">Bild</span>
+          <span class="chron-date">19.07.2025</span>
+        </div>
+        <div class="eng-bar"><div class="eng-fill" style="width:25%;background:var(--c2)"></div></div>
+      </div>
+      <div class="chron-stats">
+        <div class="chron-stat-row">
+          <div class="cs-item"><div class="v" style="color:var(--c2)">38</div><div class="l">Likes</div></div>
+          <div class="cs-item"><div class="v">0</div><div class="l">Komm.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chron-item">
+      <div class="chron-num">08</div>
+      <div class="chron-main">
+        <div class="chron-title">Unser Set vom @wearepavoia Festival 2025 ist online…</div>
+        <div class="chron-sub">
+          <span class="tbadge tbadge-bild">Bild</span>
+          <span class="chron-date">11.07.2025</span>
+        </div>
+        <div class="eng-bar"><div class="eng-fill" style="width:64%;background:var(--c2)"></div></div>
+      </div>
+      <div class="chron-stats">
+        <div class="chron-stat-row">
+          <div class="cs-item"><div class="v" style="color:var(--c2)">102</div><div class="l">Likes</div></div>
+          <div class="cs-item"><div class="v">3</div><div class="l">Komm.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chron-item">
+      <div class="chron-num">09</div>
+      <div class="chron-main">
+        <div class="chron-title">Nochmal ein kurzer recap zum @wearepavoia Festival…</div>
+        <div class="chron-sub">
+          <span class="tbadge tbadge-bild">Bild</span>
+          <span class="chron-date">07.07.2025</span>
+          <span style="font-size:.72rem;color:var(--c2);font-weight:700">★ Best Performer</span>
+        </div>
+        <div class="eng-bar"><div class="eng-fill" style="width:100%;background:var(--c2)"></div></div>
+      </div>
+      <div class="chron-stats">
+        <div class="chron-stat-row">
+          <div class="cs-item"><div class="v" style="color:var(--c2)">177</div><div class="l">Likes</div></div>
+          <div class="cs-item"><div class="v">3</div><div class="l">Komm.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chron-item">
+      <div class="chron-num">10</div>
+      <div class="chron-main">
+        <div class="chron-title">—</div>
+        <div class="chron-sub">
+          <span class="tbadge tbadge-bild">Bild</span>
+          <span class="chron-date">25.04.2025</span>
+        </div>
+        <div class="eng-bar"><div class="eng-fill" style="width:46%;background:var(--c2)"></div></div>
+      </div>
+      <div class="chron-stats">
+        <div class="chron-stat-row">
+          <div class="cs-item"><div class="v" style="color:var(--c2)">74</div><div class="l">Likes</div></div>
+          <div class="cs-item"><div class="v">1</div><div class="l">Komm.</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     ④ RELEASES
+═══════════════════════════════════════════ -->
+<div class="section">
+  <a class="anchor" id="releases"></a>
+  <div class="banner">
+    <div class="banner-bg" style="background:var(--c3)"></div>
+    <div class="banner-title">Releases</div>
+    <div class="banner-meta">5 Releases<br>Apr — Jun 2026</div>
+  </div>
+  <div class="circle-strip">
+    <div class="cir" style="background:var(--c3)"></div>
+    <div class="cir" style="background:var(--c3);opacity:.5"></div>
+    <div class="cir-empty"></div>
+    <div class="cir" style="background:var(--c3);opacity:.3"></div>
+    <div class="cir" style="background:var(--c3)"></div>
+    <div class="cir-empty"></div>
+    <div class="cir" style="background:var(--c3);opacity:.5"></div>
+  </div>
+  <div class="tl-grid">
+    <div class="tl-col tl-done">
+      <div class="tl-circ"></div>
+      <div class="tl-date">10.04.2026</div>
+      <div class="tl-title">I Wanna Feel It — Track 3</div>
+      <div class="tl-sub">Abschluss der EP · Waterfall Release</div>
+      <div class="tl-tags"><span class="plt plt-sc">SoundCloud</span><span class="tl-boost">Boost 25€</span></div>
+    </div>
+    <div class="tl-col tl-active">
+      <div class="tl-circ"></div>
+      <div class="tl-date">24.04.2026 — Nächster Release</div>
+      <div class="tl-title">I Wanna Feel It EP</div>
+      <div class="tl-sub">Komplette EP · Editorial Pitch eingereicht · Groover 20–25€</div>
+      <div class="tl-tags"><span class="plt plt-sp">Spotify</span><span class="plt plt-all">Alle Plattformen</span><span class="tl-boost">Boost 10€</span></div>
+    </div>
+    <div class="tl-col">
+      <div class="tl-circ"></div>
+      <div class="tl-date">01.05.2026</div>
+      <div class="tl-title">Prince — 17 Days (UKG Edit)</div>
+      <div class="tl-sub">Free Download · kein Boost (Copyright)</div>
+      <div class="tl-tags"><span class="plt plt-sc">SoundCloud only</span></div>
+    </div>
+    <div class="tl-col">
+      <div class="tl-circ"></div>
+      <div class="tl-date">23.05.2026</div>
+      <div class="tl-title">Muffins Trance Edit</div>
+      <div class="tl-sub">Free Download · SoundCloud Community</div>
+      <div class="tl-tags"><span class="plt plt-sc">SoundCloud only</span></div>
+    </div>
+    <div class="tl-col">
+      <div class="tl-circ"></div>
+      <div class="tl-date">06.06.2026</div>
+      <div class="tl-title">No Turning Back</div>
+      <div class="tl-sub">Label-Deadline: 15.05. · Fallback: Landr Self-Release</div>
+      <div class="tl-tags"><span class="plt plt-sp">Spotify</span><span class="plt plt-all">Alle Plattformen</span><span class="tl-boost">Boost 25€</span></div>
+    </div>
+    <div class="tl-col" style="background:var(--paper)"></div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     ⑤ CONTENT PLAN
+═══════════════════════════════════════════ -->
+<div class="section">
+  <a class="anchor" id="content"></a>
+  <div class="banner">
+    <div class="banner-bg" style="background:var(--c4)"></div>
+    <div class="banner-title">Content&shy;plan</div>
+    <div class="banner-meta">12 Posts<br>Apr — Mai 2026</div>
+  </div>
+  <div class="circle-strip">
+    <div class="cir" style="background:var(--c4)"></div>
+    <div class="cir" style="background:var(--c4);opacity:.5"></div>
+    <div class="cir-empty"></div>
+    <div class="cir" style="background:var(--c4);opacity:.3"></div>
+    <div class="cir" style="background:var(--c4)"></div>
+    <div class="cir-empty"></div>
+    <div class="cir" style="background:var(--c4);opacity:.5"></div>
+  </div>
+  <div class="cp-grid">
+    <div class="cp-card boost"><div class="cp-circ"></div><div class="cp-dr"><span class="cp-date">Di 08.04</span><span class="cp-bt">↑ 15€</span></div><div class="cp-title">Where Does Progressive House Come From</div><div class="cp-caption">the journey is still the point — swipe.</div><div class="cp-tags"><span class="fmt fmt-carousel">Carousel</span><span class="pill">Release</span><span class="pill">Set A</span></div></div>
+    <div class="cp-card"><div class="cp-circ"></div><div class="cp-dr"><span class="cp-date">Do 09.04 · 09:00</span></div><div class="cp-title">Countdown Track 3</div><div class="cp-caption">morgen. [Artwork Track 3]</div><div class="cp-tags"><span class="fmt fmt-story">Story</span><span class="pill">Release</span></div></div>
+    <div class="cp-card boost"><div class="cp-circ"></div><div class="cp-dr"><span class="cp-date">Fr 10.04 · 18:00</span><span class="cp-bt">↑ 25€</span></div><div class="cp-title">I Wanna Feel It — Track 3 Out Now</div><div class="cp-caption">track 03. out now. EP vollständig.</div><div class="cp-tags"><span class="fmt fmt-reel">Reel</span><span class="pill">Release</span><span class="pill">Set A</span></div></div>
+    <div class="cp-card"><div class="cp-circ"></div><div class="cp-dr"><span class="cp-date">Sa 11.04 · 20:00</span></div><div class="cp-title">EP Reaktion Poll</div><div class="cp-caption">Welcher Track trifft dich? 01 / 02 / 03</div><div class="cp-tags"><span class="fmt fmt-story">Story Poll</span><span class="pill">Community</span></div></div>
+    <div class="cp-card"><div class="cp-circ"></div><div class="cp-dr"><span class="cp-date">Di 15.04 · 19:00</span></div><div class="cp-title">Was ist UK Garage?</div><div class="cp-caption">chicago. manchester. 2step. swipe.</div><div class="cp-tags"><span class="fmt fmt-carousel">Carousel</span><span class="pill">Education</span><span class="pill">Set B</span></div></div>
+    <div class="cp-card"><div class="cp-circ"></div><div class="cp-dr"><span class="cp-date">Do 17.04 · 18:00</span></div><div class="cp-title">Spotify EP Teaser</div><div class="cp-caption">ab 24. April auf Spotify.</div><div class="cp-tags"><span class="fmt fmt-story">Story</span><span class="pill">Release</span></div></div>
+    <div class="cp-card"><div class="cp-circ"></div><div class="cp-dr"><span class="cp-date">Sa 19.04 · 20:00</span></div><div class="cp-title">Studio / Vinyl Session</div><div class="cp-caption">back in the studio.</div><div class="cp-tags"><span class="fmt fmt-reel">Reel</span><span class="pill">BTS</span><span class="pill">Set C</span></div></div>
+    <div class="cp-card"><div class="cp-circ"></div><div class="cp-dr"><span class="cp-date">Mi 22.04 · 12:00</span></div><div class="cp-title">Vinyl Flat Lay</div><div class="cp-caption">context over climax. the set is the song.</div><div class="cp-tags"><span class="fmt fmt-post">Post</span><span class="pill">Culture</span><span class="pill">Set A</span></div></div>
+    <div class="cp-card boost"><div class="cp-circ"></div><div class="cp-dr"><span class="cp-date">Do 24.04 · 18:00</span><span class="cp-bt">↑ 10€</span></div><div class="cp-title">I Wanna Feel It EP — jetzt auf Spotify</div><div class="cp-caption">drei tracks. eine reise. link in bio.</div><div class="cp-tags"><span class="fmt fmt-reel">Reel</span><span class="pill">Release</span><span class="pill">Set A</span></div></div>
+    <div class="cp-card"><div class="cp-circ"></div><div class="cp-dr"><span class="cp-date">Sa 26.04 · 20:00</span></div><div class="cp-title">Spotify-Screenshot + Danke</div><div class="cp-caption">danke für den support 🖤</div><div class="cp-tags"><span class="fmt fmt-story">Story</span><span class="pill">Community</span></div></div>
+    <div class="cp-card"><div class="cp-circ"></div><div class="cp-dr"><span class="cp-date">Fr 01.05 · 18:00</span></div><div class="cp-title">Prince — 17 Days UKG Edit</div><div class="cp-caption">free download on soundcloud.</div><div class="cp-tags"><span class="fmt fmt-post">Post</span><span class="pill">Release</span><span class="pill">Set B</span></div></div>
+    <div class="cp-card"><div class="cp-circ"></div><div class="cp-dr"><span class="cp-date">Di 06.05 · 19:00</span></div><div class="cp-title">Context over Climax</div><div class="cp-caption">the set is the song.</div><div class="cp-tags"><span class="fmt fmt-carousel">Carousel</span><span class="pill">Education</span><span class="pill">Set A</span></div></div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     ⑥ BUDGET
+═══════════════════════════════════════════ -->
+<div class="section">
+  <a class="anchor" id="budget"></a>
+  <div class="banner">
+    <div class="banner-bg" style="background:var(--c5)"></div>
+    <div class="banner-title">Budget</div>
+    <div class="banner-meta">Apr — Jun 2026<br>Max 50€/Monat</div>
+  </div>
+  <div class="circle-strip">
+    <div class="cir" style="background:var(--c5)"></div>
+    <div class="cir" style="background:var(--c5);opacity:.5"></div>
+    <div class="cir-empty"></div>
+    <div class="cir" style="background:var(--c5);opacity:.3"></div>
+    <div class="cir" style="background:var(--c5)"></div>
+    <div class="cir-empty"></div>
+    <div class="cir" style="background:var(--c5);opacity:.5"></div>
+  </div>
+  <div class="bud-grid">
+    <div class="bud-cell"><div class="bud-circ"></div><div class="bud-val">15€</div><div class="bud-lbl">Carousel KW15</div></div>
+    <div class="bud-cell"><div class="bud-circ"></div><div class="bud-val">25€</div><div class="bud-lbl">Track 3 Release</div></div>
+    <div class="bud-cell total"><div class="bud-circ"></div><div class="bud-val">40€</div><div class="bud-lbl">April gesamt</div></div>
+    <div class="bud-cell"><div class="bud-circ"></div><div class="bud-val">10€</div><div class="bud-lbl">EP Spotify Launch</div></div>
+    <div class="bud-cell"><div class="bud-circ"></div><div class="bud-val">25€</div><div class="bud-lbl">No Turning Back</div></div>
+    <div class="bud-cell total"><div class="bud-circ"></div><div class="bud-val">75€</div><div class="bud-lbl">Gesamt geplant</div></div>
+  </div>
+</div>
+
+
+<div class="footer">
+  <span>Clapsparrow Dashboard</span>
+  <span>Generiert 06.04.2026 &nbsp;·&nbsp; via Claude Code</span>
+</div>
+
+<script>
+// ── CHART DATA ──
+const scTrackLabels = ["Kick Back\n19.11.25","Take My Time\n08.02.26","Never Let Me Go\n24.02.26"];
+const scTrackPlays  = [2927, 289, 226];
+const scSetLabels   = ["Botanical Beats\n06.11.24","URVB Vinyl Set\n17.03.26"];
+const scSetPlays    = [723, 48];
+
+// IG chronological (oldest → newest for chart)
+const igLabels   = ["25.04.25","07.07.25","11.07.25","19.07.25","31.07.25","28.02.26","17.03.26","26.03.26","27.03.26","31.03.26"];
+const igLikes    = [74, 177, 102, 38, 44, 106, 95, 64, 47, 84];
+const igComments = [1,  3,   3,   0,  4,  5,   11,  12, 9,  2];
+
+function mkOpts() {
+  return {
+    responsive:true, maintainAspectRatio:true,
+    plugins:{ legend:{ display:false } },
+    scales:{
+      x:{ ticks:{ color:'#bbb', font:{ size:9, weight:'600' }}, grid:{ color:'rgba(0,0,0,0.04)' }, border:{ color:'rgba(0,0,0,0.07)' }},
+      y:{ ticks:{ color:'#bbb', font:{ size:9 }}, grid:{ color:'rgba(0,0,0,0.04)' }, border:{ color:'rgba(0,0,0,0.07)' }}
+    }
+  };
+}
+
+new Chart(document.getElementById('scTracksChart'),{type:'bar',data:{labels:scTrackLabels,datasets:[{data:scTrackPlays,backgroundColor:'rgba(224,122,82,.5)',borderColor:'#E07A52',borderWidth:2,borderRadius:3}]},options:mkOpts()});
+new Chart(document.getElementById('scSetsChart'),{type:'bar',data:{labels:scSetLabels,datasets:[{data:scSetPlays,backgroundColor:'rgba(90,142,184,.5)',borderColor:'#5A8EB8',borderWidth:2,borderRadius:3}]},options:mkOpts()});
+new Chart(document.getElementById('igLikesChart'),{type:'line',data:{labels:igLabels,datasets:[{data:igLikes,backgroundColor:'rgba(192,106,138,.12)',borderColor:'#C06A8A',borderWidth:2,fill:true,tension:.35,pointRadius:4,pointBackgroundColor:'#C06A8A'}]},options:mkOpts()});
+new Chart(document.getElementById('igCommsChart'),{type:'line',data:{labels:igLabels,datasets:[{data:igComments,backgroundColor:'rgba(192,106,138,.08)',borderColor:'#C06A8A',borderWidth:2,fill:true,tension:.35,pointRadius:4,pointBackgroundColor:'#C06A8A'}]},options:mkOpts()});
+
+// ── STICKY NAV: active travels left → right while scrolling ──
+const sections = ['overview','soundcloud','instagram','releases','content','budget'];
+const navLinks  = document.querySelectorAll('.nav a');
+
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      // Don't let observer override when we're at the very top
+      if (window.scrollY < 80 && e.target.getAttribute('id') !== 'overview') return;
+      const id = e.target.getAttribute('id');
+      navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+    }
+  });
+}, { rootMargin: '-52px 0px -52% 0px', threshold: 0 });
+
+sections.forEach(id => { const el = document.getElementById(id); if (el) obs.observe(el); });
+
+// Force "Übersicht" active when scrolled back to top
+window.addEventListener('scroll', () => {
+  if (window.scrollY < 80) {
+    navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#overview'));
+  }
+}, { passive: true });
+
+navLinks.forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.getElementById(link.getAttribute('href').slice(1));
+    if (!target) return;
+    const navH = document.getElementById('mainNav').offsetHeight;
+    window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - navH - 2, behavior:'smooth' });
+  });
+});
+</script>
+</body>
+</html>

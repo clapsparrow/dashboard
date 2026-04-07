@@ -1,0 +1,13 @@
+# Netlify Konfiguration für Clapsparrow Dashboard
+[build]
+  publish = "."
+
+[[redirects]]
+  from = "/"
+  to   = "/dashboard.html"
+  status = 200
+
+[[headers]]
+  for = "/dashboard.html"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
